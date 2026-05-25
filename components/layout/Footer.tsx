@@ -42,10 +42,10 @@ export default function Footer() {
   return (
     <footer className="bg-brand-bg dark:bg-[#0F0D0A] border-t border-brand-border dark:border-[#3A3228]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 sm:gap-16">
 
           {/* Column 1: Brand */}
-          <div>
+          <div className="text-center sm:text-start">
             <div className="mb-4">
               <span className="text-brand-gold dark:text-[#C19A6B] font-heading text-3xl font-bold tracking-widest block">
                 ANAR
@@ -63,7 +63,7 @@ export default function Footer() {
               <p className="text-brand-text-secondary dark:text-[#A09080] text-xs uppercase tracking-widest mb-3 font-medium">
                 {t("footer.followUs")}
               </p>
-              <div className="flex gap-3">
+              <div className="flex justify-center sm:justify-start gap-5">
                 {socials.map((s) => (
                   <a
                     key={s.label}
@@ -109,7 +109,7 @@ export default function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-brand-border dark:border-[#3A3228]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-center">
-          <p className="text-brand-text-secondary dark:text-[#A09080] text-xs text-center">
+          <p className="text-brand-text-secondary dark:text-[#A09080] text-[11px] sm:text-xs text-center mt-4 sm:mt-0">
             {t("footer.copyright")}
           </p>
         </div>

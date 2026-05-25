@@ -30,14 +30,13 @@ export default function HeroSlider() {
   }, [emblaApi]);
 
   return (
-    <section className="relative overflow-hidden" style={{ minHeight: "90vh" }}>
-      <div ref={emblaRef} className="overflow-hidden h-full" style={{ minHeight: "90vh" }}>
-        <div className="flex h-full" style={{ minHeight: "90vh" }}>
+    <section className="relative overflow-hidden h-[85vh] sm:h-[90vh]">
+      <div ref={emblaRef} className="overflow-hidden h-full">
+        <div className="flex h-full">
           {heroSlides.map((slide, i) => (
             <div
               key={i}
-              className="relative flex-[0_0_100%] min-w-0"
-              style={{ minHeight: "90vh" }}
+              className="relative flex-[0_0_100%] min-w-0 h-full"
             >
               {/* Background Image */}
               <Image
@@ -49,7 +48,7 @@ export default function HeroSlider() {
                 sizes="100vw"
               />
 
-              {/* Overlay gradients — intensity varies per slide */}
+              {/* Overlay gradients */}
               {slide.scrim === "heavy" ? (
                 <>
                   <div className="absolute inset-0 bg-gradient-to-b from-brand-bg/20 dark:from-[#0F0D0A]/20 via-transparent to-brand-bg/75 dark:to-[#0F0D0A]/75" />
@@ -62,20 +61,45 @@ export default function HeroSlider() {
                 </>
               )}
 
-              {/* Content */}
-              <div className="absolute inset-0 flex items-center">
-                <div className="max-w-7xl mx-auto px-6 sm:px-10 w-full">
-                  <div className="max-w-xl pl-4 sm:pl-8">
+              {/* ── Mobile content — bottom-anchored ── */}
+              <div className="sm:hidden absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent px-5 pb-8 pt-20 z-10">
+                <div className="inline-flex items-center gap-1.5 mb-2">
+                  <span className="h-px w-6 bg-brand-gold" />
+                  <span className="text-brand-gold text-[10px] uppercase tracking-[0.2em] font-medium">
+                    Anar Perfumes
+                  </span>
+                </div>
+                <h1 className="font-heading font-bold text-[#F5F0E8] leading-tight text-3xl max-w-[80%]">
+                  {lang === "fr" ? slide.title_fr : slide.title_en}
+                </h1>
+                <p className="text-[#F5F0E8]/90 text-sm mt-2 mb-5 max-w-[85%] leading-relaxed">
+                  {lang === "fr" ? slide.subtitle_fr : slide.subtitle_en}
+                </p>
+                <Link
+                  href={slide.href}
+                  className="inline-flex items-center gap-2 bg-brand-gold text-brand-bg font-semibold px-6 py-3 rounded-xl text-sm group"
+                >
+                  {lang === "fr" ? slide.cta_fr : slide.cta_en}
+                  <span className="transform group-hover:translate-x-1 transition-transform duration-200">
+                    →
+                  </span>
+                </Link>
+              </div>
+
+              {/* ── Desktop content — centered ── */}
+              <div className="hidden sm:flex absolute inset-0 items-center">
+                <div className="max-w-7xl mx-auto px-10 w-full">
+                  <div className="max-w-xl">
                     <div className="inline-flex items-center gap-2 mb-4">
                       <span className="h-px w-8 bg-brand-gold" />
                       <span className="text-brand-gold text-xs uppercase tracking-widest font-medium">
                         Anar Perfumes
                       </span>
                     </div>
-                    <h1 className="font-heading font-bold text-brand-text-primary dark:text-[#F5F0E8] mb-4 leading-tight text-4xl sm:text-6xl">
+                    <h1 className="font-heading font-bold text-brand-text-primary dark:text-[#F5F0E8] mb-4 leading-tight text-6xl">
                       {lang === "fr" ? slide.title_fr : slide.title_en}
                     </h1>
-                    <p className="text-brand-text-secondary dark:text-[#A09080] text-lg sm:text-xl mb-8 max-w-lg leading-relaxed">
+                    <p className="text-brand-text-secondary dark:text-[#A09080] text-xl mb-8 max-w-lg leading-relaxed">
                       {lang === "fr" ? slide.subtitle_fr : slide.subtitle_en}
                     </p>
                     <Link
@@ -95,24 +119,24 @@ export default function HeroSlider() {
         </div>
       </div>
 
-      {/* Prev / Next buttons */}
+      {/* Prev / Next — desktop only */}
       <button
         onClick={scrollPrev}
-        className="absolute start-4 sm:start-8 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-brand-bg/60 dark:bg-[#0F0D0A]/60 backdrop-blur-sm border border-brand-border dark:border-[#3A3228] text-brand-text-primary dark:text-[#F5F0E8] hover:bg-brand-gold hover:text-brand-bg hover:border-brand-gold transition-all duration-300 hidden sm:flex items-center justify-center z-10"
+        className="absolute start-8 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-brand-bg/60 dark:bg-[#0F0D0A]/60 backdrop-blur-sm border border-brand-border dark:border-[#3A3228] text-brand-text-primary dark:text-[#F5F0E8] hover:bg-brand-gold hover:text-brand-bg hover:border-brand-gold transition-all duration-300 hidden sm:flex items-center justify-center z-10"
         aria-label="Previous slide"
       >
         <ChevronLeft size={20} />
       </button>
       <button
         onClick={scrollNext}
-        className="absolute end-4 sm:end-8 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-brand-bg/60 dark:bg-[#0F0D0A]/60 backdrop-blur-sm border border-brand-border dark:border-[#3A3228] text-brand-text-primary dark:text-[#F5F0E8] hover:bg-brand-gold hover:text-brand-bg hover:border-brand-gold transition-all duration-300 hidden sm:flex items-center justify-center z-10"
+        className="absolute end-8 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-brand-bg/60 dark:bg-[#0F0D0A]/60 backdrop-blur-sm border border-brand-border dark:border-[#3A3228] text-brand-text-primary dark:text-[#F5F0E8] hover:bg-brand-gold hover:text-brand-bg hover:border-brand-gold transition-all duration-300 hidden sm:flex items-center justify-center z-10"
         aria-label="Next slide"
       >
         <ChevronRight size={20} />
       </button>
 
       {/* Dot navigation */}
-      <div className="absolute bottom-8 start-0 end-0 flex items-center justify-center gap-2 z-10">
+      <div className="absolute bottom-4 sm:bottom-8 start-0 end-0 flex items-center justify-center gap-2 z-10">
         {heroSlides.map((_, i) => (
           <button
             key={i}
@@ -121,7 +145,7 @@ export default function HeroSlider() {
               "transition-all duration-300 rounded-full",
               i === selectedIndex
                 ? "w-8 h-2 bg-brand-gold"
-                : "w-2 h-2 bg-brand-text-secondary/50 hover:bg-brand-text-secondary",
+                : "w-2 h-2 bg-white/50 hover:bg-white/80",
             ].join(" ")}
             aria-label={`Go to slide ${i + 1}`}
           />

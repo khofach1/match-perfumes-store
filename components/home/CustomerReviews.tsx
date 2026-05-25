@@ -16,7 +16,7 @@ interface Review {
 
 function ReviewCard({ review }: { review: Review }) {
   return (
-    <div className="flex-shrink-0 w-72 bg-brand-card dark:bg-[#1A1714] border border-brand-border dark:border-[#3A3228] rounded-2xl p-5 mx-2 hover:border-brand-gold/40 transition-all duration-300">
+    <div className="flex-shrink-0 w-[85vw] sm:w-72 bg-brand-card dark:bg-[#1A1714] border border-brand-border dark:border-[#3A3228] rounded-2xl p-5 mx-2 hover:border-brand-gold/40 transition-all duration-300">
       {/* Stars */}
       <div className="flex gap-0.5 mb-3">
         {[1, 2, 3, 4, 5].map((s) => (
@@ -29,7 +29,7 @@ function ReviewCard({ review }: { review: Review }) {
       </div>
 
       {/* Review text */}
-      <p className="text-brand-text-secondary dark:text-[#A09080] text-sm leading-relaxed mb-4 line-clamp-3">
+      <p className="text-brand-text-secondary dark:text-[#A09080] text-xs sm:text-sm leading-relaxed mb-4 line-clamp-3">
         &ldquo;{review.text}&rdquo;
       </p>
 

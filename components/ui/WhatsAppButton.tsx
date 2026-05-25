@@ -20,7 +20,7 @@ export default function WhatsAppButton() {
       aria-label="Contact us on WhatsApp — Support 7j/7"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="fixed bottom-5 right-5 z-50 flex items-center gap-2 group"
+      className="fixed bottom-20 right-4 sm:bottom-5 sm:right-5 z-50 flex items-center gap-2 group"
     >
       {/* Tooltip */}
       <span
@@ -33,7 +33,7 @@ export default function WhatsAppButton() {
       </span>
 
       {/* Button */}
-      <div className="w-14 h-14 rounded-full bg-[#25D366] flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 active:scale-95">
+      <div className="w-[52px] h-[52px] sm:w-14 sm:h-14 rounded-full bg-[#25D366] flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 active:scale-95">
         <FaWhatsapp size={28} color="#ffffff" />
       </div>
     </a>

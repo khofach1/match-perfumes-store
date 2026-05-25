@@ -14,7 +14,7 @@ export default function MatchBeautyBanner() {
   ];
 
   const content = (
-    <div className="px-6 py-8 sm:px-10 sm:py-10 md:px-14 md:py-12 max-w-xl">
+    <div className="px-5 py-6 sm:px-10 sm:py-10 md:px-14 md:py-12 max-w-xl">
       <div className="inline-flex items-center gap-2 mb-5">
         <span className="h-px w-8 bg-brand-gold" />
         <span className="text-brand-gold text-xs uppercase tracking-[0.3em] font-medium">
@@ -23,7 +23,7 @@ export default function MatchBeautyBanner() {
       </div>
 
       <h2
-        className="text-4xl sm:text-5xl font-bold mb-4 font-heading"
+        className="text-3xl sm:text-5xl font-bold mb-4 font-heading"
         style={{
           background: "linear-gradient(135deg, #9A7235 0%, #5C3415 60%)",
           WebkitBackgroundClip: "text",
@@ -42,10 +42,10 @@ export default function MatchBeautyBanner() {
         {t("beauty.description")}
       </p>
 
-      <div className="flex gap-8 mb-10">
+      <div className="flex justify-around sm:justify-start gap-4 sm:gap-8 mb-10">
         {stats.map((stat) => (
           <div key={stat.label} className="text-center">
-            <div className="text-brand-gold dark:text-[#C19A6B] font-bold text-2xl font-heading">
+            <div className="text-brand-gold dark:text-[#C19A6B] font-bold text-xl sm:text-2xl font-heading">
               {stat.value}
             </div>
             <div className="text-brand-text-secondary dark:text-[#A09080] text-xs uppercase tracking-wider mt-0.5">

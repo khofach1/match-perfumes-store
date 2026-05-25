@@ -39,7 +39,7 @@ export default function SelectedPackages() {
                 SÉLECTION
               </span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-brand-text-primary dark:text-[#F5F0E8] font-heading">
+            <h2 className="text-2xl sm:text-4xl font-bold text-brand-text-primary dark:text-[#F5F0E8] font-heading">
               {t("packages.title")}
             </h2>
             <p className="text-brand-text-secondary dark:text-[#A09080] mt-2 text-sm">
@@ -77,7 +77,7 @@ export default function SelectedPackages() {
             {featured.map((product) => (
               <div
                 key={product.id}
-                className="flex-[0_0_calc(100%-1rem)] sm:flex-[0_0_calc(50%-0.625rem)] md:flex-[0_0_calc(33.333%-0.833rem)] lg:flex-[0_0_calc(25%-0.75rem)] min-w-0"
+                className="flex-[0_0_75vw] sm:flex-[0_0_calc(50%-0.625rem)] md:flex-[0_0_calc(33.333%-0.833rem)] lg:flex-[0_0_calc(25%-0.75rem)] min-w-0 max-w-[280px] sm:max-w-none"
               >
                 <ProductCard product={product} />
               </div>
