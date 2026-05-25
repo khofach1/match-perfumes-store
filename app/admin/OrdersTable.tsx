@@ -131,7 +131,7 @@ export default function OrdersTable({ initialOrders }: { initialOrders: Order[] 
         color: "#aaa",
         fontSize: "15px",
       }}>
-        Aucune commande pour l'instant.
+        Aucune commande pour l&apos;instant.
       </div>
     );
   }
