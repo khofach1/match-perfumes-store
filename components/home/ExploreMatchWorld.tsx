@@ -36,7 +36,7 @@ export default function ExploreMatchWorld() {
             <Link
               key={tile.id}
               href={tile.href}
-              className="relative overflow-hidden rounded-2xl group aspect-[4/3] sm:aspect-[3/2] block"
+              className="relative overflow-hidden rounded-2xl group h-48 sm:h-64 md:h-80 lg:h-96 block"
             >
               <Image
                 src={tile.image}

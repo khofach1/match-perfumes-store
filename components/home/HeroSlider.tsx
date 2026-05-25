@@ -65,7 +65,7 @@ export default function HeroSlider() {
               {/* Content */}
               <div className="absolute inset-0 flex items-center">
                 <div className="max-w-7xl mx-auto px-6 sm:px-10 w-full">
-                  <div className="max-w-xl">
+                  <div className="max-w-xl pl-4 sm:pl-8">
                     <div className="inline-flex items-center gap-2 mb-4">
                       <span className="h-px w-8 bg-brand-gold" />
                       <span className="text-brand-gold text-xs uppercase tracking-widest font-medium">
@@ -98,14 +98,14 @@ export default function HeroSlider() {
       {/* Prev / Next buttons */}
       <button
         onClick={scrollPrev}
-        className="absolute start-4 sm:start-8 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-brand-bg/60 dark:bg-[#0F0D0A]/60 backdrop-blur-sm border border-brand-border dark:border-[#3A3228] text-brand-text-primary dark:text-[#F5F0E8] hover:bg-brand-gold hover:text-brand-bg hover:border-brand-gold transition-all duration-300 flex items-center justify-center z-10"
+        className="absolute start-4 sm:start-8 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-brand-bg/60 dark:bg-[#0F0D0A]/60 backdrop-blur-sm border border-brand-border dark:border-[#3A3228] text-brand-text-primary dark:text-[#F5F0E8] hover:bg-brand-gold hover:text-brand-bg hover:border-brand-gold transition-all duration-300 hidden sm:flex items-center justify-center z-10"
         aria-label="Previous slide"
       >
         <ChevronLeft size={20} />
       </button>
       <button
         onClick={scrollNext}
-        className="absolute end-4 sm:end-8 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-brand-bg/60 dark:bg-[#0F0D0A]/60 backdrop-blur-sm border border-brand-border dark:border-[#3A3228] text-brand-text-primary dark:text-[#F5F0E8] hover:bg-brand-gold hover:text-brand-bg hover:border-brand-gold transition-all duration-300 flex items-center justify-center z-10"
+        className="absolute end-4 sm:end-8 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-brand-bg/60 dark:bg-[#0F0D0A]/60 backdrop-blur-sm border border-brand-border dark:border-[#3A3228] text-brand-text-primary dark:text-[#F5F0E8] hover:bg-brand-gold hover:text-brand-bg hover:border-brand-gold transition-all duration-300 hidden sm:flex items-center justify-center z-10"
         aria-label="Next slide"
       >
         <ChevronRight size={20} />
