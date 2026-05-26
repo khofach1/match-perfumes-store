@@ -251,9 +251,13 @@ export async function POST(req: NextRequest) {
   let userId: string | null = null;
   const authHeader = req.headers.get("authorization");
   if (authHeader?.startsWith("Bearer ")) {
-    const token = authHeader.slice(7);
-    const { data: { user } } = await supabase.auth.getUser(token);
-    userId = user?.id ?? null;
+    try {
+      const token = authHeader.slice(7);
+      const { data: { user } } = await supabase.auth.getUser(token);
+      userId = user?.id ?? null;
+    } catch {
+      // Invalid or expired token — treat as guest order
+    }
   }
 
   // 1. Save to Supabase

@@ -8,7 +8,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import { useCart } from "@/context/CartContext";
 import type { CartItem } from "@/context/CartContext";
 import { useLanguage } from "@/context/LanguageContext";
-import { supabaseClient } from "@/lib/supabase-client";
+import { useAuth } from "@/context/AuthContext";
 
 interface FormData {
   fullName: string;
@@ -68,6 +68,7 @@ function generateOrderId() {
 export default function CheckoutPage() {
   const { items, total, clearCart } = useCart();
   const { t, lang } = useLanguage();
+  const { session } = useAuth();
 
   const [formData, setFormData] = useState<FormData>({
     fullName: "",
@@ -112,7 +113,6 @@ export default function CheckoutPage() {
 
     try {
       const fetchHeaders: Record<string, string> = { "Content-Type": "application/json" };
-      const { data: { session } } = await supabaseClient.auth.getSession();
       if (session?.access_token) {
         fetchHeaders["Authorization"] = `Bearer ${session.access_token}`;
       }
