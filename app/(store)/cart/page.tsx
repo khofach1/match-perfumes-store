@@ -237,6 +237,12 @@ export default function CartPage() {
                 {t("cart.checkout")}
               </Link>
 
+              <p className="text-center text-xs mt-1" style={{ color: "#A07D4F" }}>
+                {lang === "fr"
+                  ? "Un compte est requis pour finaliser votre commande."
+                  : "An account is required to complete your order."}
+              </p>
+
               {/* Trust signals */}
               <div className="pt-1 space-y-1.5">
                 <div className="flex items-center justify-center gap-1.5 text-brand-text-secondary dark:text-[#A09080] text-xs">

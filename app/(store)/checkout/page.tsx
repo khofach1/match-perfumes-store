@@ -10,6 +10,52 @@ import type { CartItem } from "@/context/CartContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { useAuth } from "@/context/AuthContext";
 
+function AuthGate({ lang }: { lang: string }) {
+  return (
+    <div className="min-h-screen bg-brand-bg dark:bg-[#0F0D0A] flex items-center justify-center px-4 py-16">
+      <div
+        className="w-full bg-brand-bg dark:bg-[#1A1714] rounded-2xl px-8 sm:px-12 py-12 text-center"
+        style={{
+          maxWidth: 460,
+          border: "1px solid rgba(160,125,79,0.3)",
+          boxShadow: "0 8px 48px rgba(160,125,79,0.06), 0 1px 8px rgba(0,0,0,0.04)",
+        }}
+      >
+        <p className="font-body mb-3" style={{ fontSize: 10, letterSpacing: "0.35em", color: "#A07D4F" }}>
+          A N A R &nbsp; P E R F U M E S
+        </p>
+        <div className="flex justify-center mb-8">
+          <span className="block h-px w-8" style={{ background: "#A07D4F" }} />
+        </div>
+
+        <h1 className="font-heading text-brand-text-primary dark:text-[#F5F0E8] font-normal mb-2" style={{ fontSize: 28 }}>
+          {lang === "fr" ? "Connectez-vous pour continuer" : "Log in to complete your order"}
+        </h1>
+        <p className="text-brand-text-secondary dark:text-[#A09080] text-sm leading-relaxed mb-8 max-w-xs mx-auto">
+          {lang === "fr"
+            ? "Créez un compte pour passer votre commande et suivre vos livraisons."
+            : "Create an account to place your order and track your deliveries."}
+        </p>
+
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <Link
+            href="/account?redirect=/checkout"
+            className="flex-1 bg-brand-gold text-brand-bg font-semibold py-3.5 rounded-xl hover:bg-brand-gold-hover transition-all duration-300 shadow-gold text-sm text-center"
+          >
+            {lang === "fr" ? "Se connecter" : "Sign in"}
+          </Link>
+          <Link
+            href="/account?redirect=/checkout&tab=register"
+            className="flex-1 border border-brand-gold dark:border-[#A07D4F] text-brand-gold dark:text-[#C19A6B] font-semibold py-3.5 rounded-xl hover:bg-brand-gold/10 transition-all duration-300 text-sm text-center"
+          >
+            {lang === "fr" ? "Créer un compte" : "Create an account"}
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 interface FormData {
   fullName: string;
   phone: string;
@@ -68,7 +114,7 @@ function generateOrderId() {
 export default function CheckoutPage() {
   const { items, total, clearCart } = useCart();
   const { t, lang } = useLanguage();
-  const { session } = useAuth();
+  const { session, user, loading: authLoading } = useAuth();
 
   const [formData, setFormData] = useState<FormData>({
     fullName: "",
@@ -169,6 +215,21 @@ export default function CheckoutPage() {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
   };
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-brand-bg dark:bg-[#0F0D0A] flex items-center justify-center">
+        <svg className="animate-spin h-6 w-6 text-brand-gold dark:text-[#C19A6B]" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" className="opacity-25" />
+          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+        </svg>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <AuthGate lang={lang} />;
+  }
 
   if (orderSnapshot) {
     return (

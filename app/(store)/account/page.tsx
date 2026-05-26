@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { LogOut, Package, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { supabaseClient } from "@/lib/supabase-client";
@@ -44,10 +45,11 @@ const STATUS_CONFIG = {
 
 // ─── Auth form (not logged in) ────────────────────────────────────────────────
 
-function AuthForm() {
+function AuthForm({ redirectTo, initialTab }: { redirectTo?: string; initialTab?: string }) {
   const { signIn, signUp } = useAuth();
   const { lang } = useLanguage();
-  const [tab, setTab] = useState<"login" | "register">("login");
+  const router = useRouter();
+  const [tab, setTab] = useState<"login" | "register">(initialTab === "register" ? "register" : "login");
 
   // Shared
   const [email, setEmail] = useState("");
@@ -75,7 +77,11 @@ function AuthForm() {
     setLoading(true);
     const { error } = await signIn(email, password);
     setLoading(false);
-    if (error) setError(lang === "fr" ? "Email ou mot de passe incorrect." : "Incorrect email or password.");
+    if (error) {
+      setError(lang === "fr" ? "Email ou mot de passe incorrect." : "Incorrect email or password.");
+    } else {
+      router.push(redirectTo ?? "/account");
+    }
   };
 
   const handleRegister = async (e: React.FormEvent) => {
@@ -96,6 +102,8 @@ function AuthForm() {
       setCheckEmail(true);
     } else if (error) {
       setError(error);
+    } else {
+      router.push(redirectTo ?? "/account");
     }
   };
 
@@ -439,8 +447,11 @@ function Dashboard() {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default function AccountPage() {
+function AccountPageContent() {
   const { user, loading } = useAuth();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect") ?? undefined;
+  const initialTab = searchParams.get("tab") ?? undefined;
 
   if (loading) {
     return (
@@ -453,5 +464,22 @@ export default function AccountPage() {
     );
   }
 
-  return user ? <Dashboard /> : <AuthForm />;
+  return user ? <Dashboard /> : <AuthForm redirectTo={redirectTo} initialTab={initialTab} />;
+}
+
+export default function AccountPage() {
+  return (
+    <React.Suspense
+      fallback={
+        <div className="min-h-screen bg-brand-bg dark:bg-[#0F0D0A] flex items-center justify-center">
+          <svg className="animate-spin h-6 w-6 text-brand-gold dark:text-[#C19A6B]" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" className="opacity-25" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+          </svg>
+        </div>
+      }
+    >
+      <AccountPageContent />
+    </React.Suspense>
+  );
 }

@@ -164,7 +164,12 @@ export default function Navbar() {
               <Link
                 href="/account"
                 aria-label="Account"
-                className="relative hidden sm:flex w-9 h-9 items-center justify-center text-brand-text-secondary dark:text-[#A09080] hover:text-brand-gold dark:hover:text-[#C19A6B] transition-colors duration-200 rounded-full hover:bg-brand-card dark:hover:bg-[#242018]"
+                className={[
+                  "relative hidden sm:flex w-9 h-9 items-center justify-center transition-colors duration-200 rounded-full hover:bg-brand-card dark:hover:bg-[#242018]",
+                  user
+                    ? "text-brand-text-secondary dark:text-[#A09080] hover:text-brand-gold dark:hover:text-[#C19A6B]"
+                    : "text-brand-gold/70 dark:text-[#C19A6B]/70 hover:text-brand-gold dark:hover:text-[#C19A6B] ring-1 ring-brand-gold/40 dark:ring-[#C19A6B]/40",
+                ].join(" ")}
               >
                 <User size={18} />
                 {user && (
