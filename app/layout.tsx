@@ -1,43 +1,42 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Manrope } from "next/font/google";
+import { Cairo, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import Analytics from "@/components/Analytics";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  style: ["normal", "italic"],
-  variable: "--font-heading",
+  weight: ["300", "400", "500"],
+  variable: "--font-display",
   display: "swap",
 });
 
-const manrope = Manrope({
-  subsets: ["latin"],
+const cairo = Cairo({
+  subsets: ["arabic", "latin"],
   weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-body",
+  variable: "--font-arabic",
   display: "swap",
 });
 
 export const viewport: Viewport = {
-  themeColor: "#9A7235",
+  themeColor: "#F4EFE6",
   width: "device-width",
   initialScale: 1,
 };
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://anarperfumes.ma"),
-  title: "Anar Perfumes | Inspired Luxury Fragrances — Morocco",
+  title: "Anar Perfumes | Authentic Gulf Fragrances — Morocco",
   description:
-    "Discover Anar Perfumes — luxury inspired fragrances crafted for the modern Moroccan. Free delivery on orders over 100 DH.",
+    "Discover Anar Perfumes — authentic Afnan, Lattafa, Armaf & Gulf fragrances delivered across Morocco. Free delivery on orders over 100 DH.",
   keywords: [
-    "parfums inspirés",
-    "inspired perfumes",
-    "luxury fragrances Morocco",
+    "Gulf fragrances Morocco",
+    "Afnan perfumes Maroc",
+    "Lattafa perfumes Maroc",
+    "Armaf perfumes Maroc",
+    "parfums du Golfe Maroc",
     "anar perfumes",
     "parfums de luxe Maroc",
-    "fragrances inspirées",
     "parfums maroc",
-    "inspired perfumes maroc",
   ],
   authors: [{ name: "Anar Perfumes" }],
   robots: {
@@ -49,9 +48,9 @@ export const metadata: Metadata = {
     canonical: "https://anarperfumes.ma",
   },
   openGraph: {
-    title: "Anar Perfumes | Inspired Luxury Fragrances — Morocco",
+    title: "Anar Perfumes | Authentic Gulf Fragrances — Morocco",
     description:
-      "Discover Anar Perfumes — luxury inspired fragrances crafted for the modern Moroccan. Free delivery on orders over 100 DH.",
+      "Discover Anar Perfumes — authentic Afnan, Lattafa, Armaf & Gulf fragrances delivered across Morocco. Free delivery on orders over 100 DH.",
     type: "website",
     url: "https://anarperfumes.ma",
     locale: "fr_MA",
@@ -62,15 +61,15 @@ export const metadata: Metadata = {
         url: "/images/hero/hero-collection.png",
         width: 1200,
         height: 630,
-        alt: "Anar Perfumes — Luxury Inspired Fragrances Morocco",
+        alt: "Anar Perfumes — Authentic Gulf Fragrances Morocco",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Anar Perfumes | Inspired Luxury Fragrances — Morocco",
+    title: "Anar Perfumes | Authentic Gulf Fragrances — Morocco",
     description:
-      "Discover Anar Perfumes — luxury inspired fragrances crafted for the modern Moroccan. Free delivery on orders over 100 DH.",
+      "Discover Anar Perfumes — authentic Afnan, Lattafa, Armaf & Gulf fragrances delivered across Morocco. Free delivery on orders over 100 DH.",
     images: ["/images/hero/hero-collection.png"],
   },
 };
@@ -85,10 +84,10 @@ export default function RootLayout({
       lang="fr"
       dir="ltr"
       suppressHydrationWarning
-      className={`${cormorant.variable} ${manrope.variable}`}
+      className={`${cormorant.variable} ${cairo.variable}`}
     >
       <head />
-      <body className="bg-brand-bg text-brand-text-primary min-h-screen flex flex-col antialiased font-body">
+      <body className="min-h-screen bg-bone text-ink flex flex-col antialiased font-body">
         <Analytics />
         {children}
       </body>

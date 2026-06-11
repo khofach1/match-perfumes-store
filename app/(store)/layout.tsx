@@ -1,5 +1,4 @@
 import Providers from "@/app/providers";
-import TopBar from "@/components/layout/TopBar";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import CartSidebar from "@/components/ui/CartSidebar";
@@ -12,7 +11,6 @@ export default function StoreLayout({
 }) {
   return (
     <Providers>
-      <TopBar />
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />

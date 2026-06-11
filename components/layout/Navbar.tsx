@@ -1,250 +1,197 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
-import { Search, ShoppingBag, User, Menu, X, ChevronDown } from "lucide-react";
-import { useLanguage } from "@/context/LanguageContext";
-import { useCart } from "@/context/CartContext";
+import { usePathname, useRouter } from "next/navigation";
+import { Menu, Search, ShoppingBag, User, X } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-import MegaMenu from "./MegaMenu";
-import ThemeToggle from "@/components/ui/ThemeToggle";
-
-interface NavItem {
-  label: string;
-  href: string;
-  isOffer?: boolean;
-  isNew?: boolean;
-  hasMegaMenu?: boolean;
-}
+import { useCart } from "@/context/CartContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Navbar() {
-  const { t, lang } = useLanguage();
+  const pathname = usePathname();
+  const router = useRouter();
   const { count, openCart } = useCart();
   const { user } = useAuth();
+  const { lang, t, toggleLanguage } = useLanguage();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [scrolled, setScrolled] = useState(false);
-  const megaMenuRef = useRef<HTMLDivElement>(null);
-  const megaMenuTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const isHome = pathname === "/";
+  const isTransparent = isHome && !scrolled && !mobileOpen && !searchOpen;
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const navItems: NavItem[] = [
-    { label: t("nav.offers"), href: "/products?offer=true", isOffer: true },
-    { label: t("nav.perfumes"), href: "/products", hasMegaMenu: true },
-    { label: t("nav.giftsAndSets"), href: "/products?category=gifts" },
-    { label: t("nav.newArrival"), href: "/products?new=true", isNew: true },
-    { label: t("nav.matchBeauty"), href: "/products?category=beauty" },
+  function onSearch(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const query = searchQuery.trim();
+    if (query) router.push(`/products?search=${encodeURIComponent(query)}`);
+    setSearchOpen(false);
+  }
+
+  const navItems = [
+    { label: "SHOP", href: "/products" },
+    { label: "WORLD", href: "/#world" },
   ];
 
-  const handleMegaEnter = () => {
-    if (megaMenuTimer.current) clearTimeout(megaMenuTimer.current);
-    setMegaMenuOpen(true);
-  };
-
-  const handleMegaLeave = () => {
-    megaMenuTimer.current = setTimeout(() => setMegaMenuOpen(false), 150);
-  };
-
   return (
-    <>
-      <nav
-        className={[
-          "sticky top-0 z-40 bg-brand-bg dark:bg-[#0F0D0A] border-b border-brand-border dark:border-[#3A3228] transition-all duration-300",
-          scrolled ? "shadow-gold" : "",
-        ].join(" ")}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex items-center justify-between h-16 md:h-20">
-            {/* Logo */}
-            <Link href="/" className="flex flex-col items-center group">
-              <span className="text-brand-gold dark:text-[#C19A6B] font-heading text-2xl md:text-3xl font-bold tracking-widest leading-none group-hover:text-brand-gold-hover transition-colors duration-200">
-                ANAR
-              </span>
-              <span className="text-brand-text-secondary dark:text-[#A09080] text-[9px] tracking-[0.3em] uppercase font-medium">
-                PERFUMES
-              </span>
+    <header
+      className={[
+        "fixed inset-x-0 top-0 z-50 border-b transition-all duration-500",
+        isTransparent
+          ? "border-transparent bg-transparent text-bone"
+          : "border-border bg-bone/94 text-ink backdrop-blur-md",
+      ].join(" ")}
+    >
+      <nav className="mx-auto grid h-20 max-w-7xl grid-cols-[1fr_auto_1fr] items-center px-5 sm:px-8">
+        {/* Left navigation */}
+        <div className="hidden items-center gap-8 lg:flex">
+          {navItems.slice(0, 2).map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="text-xs font-medium uppercase tracking-[0.22em] opacity-[0.82] hover:text-tangier"
+            >
+              {item.label}
             </Link>
-
-            {/* Desktop nav */}
-            <div className="hidden lg:flex items-center gap-1">
-              {navItems.map((item) =>
-                item.hasMegaMenu ? (
-                  <div
-                    key={item.href}
-                    className="relative"
-                    ref={megaMenuRef}
-                    onMouseEnter={handleMegaEnter}
-                    onMouseLeave={handleMegaLeave}
-                  >
-                    <Link
-                      href={item.href}
-                      className="flex items-center gap-1 px-3 py-2 text-sm text-brand-text-secondary dark:text-[#A09080] hover:text-brand-gold dark:hover:text-[#C19A6B] transition-colors duration-200 relative group"
-                    >
-                      {item.label}
-                      <ChevronDown
-                        size={14}
-                        className={`transition-transform duration-200 ${megaMenuOpen ? "rotate-180" : ""}`}
-                      />
-                      <span className="absolute bottom-0 start-0 end-0 h-0.5 bg-brand-gold scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-start" />
-                    </Link>
-                    {megaMenuOpen && (
-                      <div onMouseEnter={handleMegaEnter} onMouseLeave={handleMegaLeave}>
-                        <MegaMenu onClose={() => setMegaMenuOpen(false)} />
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={[
-                      "relative px-3 py-2 text-sm transition-colors duration-200 group",
-                      item.isOffer
-                        ? "text-red-400 hover:text-red-300 font-semibold"
-                        : "text-brand-text-secondary dark:text-[#A09080] hover:text-brand-gold dark:hover:text-[#C19A6B]",
-                    ].join(" ")}
-                  >
-                    {item.label}
-                    {item.isNew && (
-                      <span className="absolute -top-1 -end-1 w-2 h-2 rounded-full bg-emerald-500" />
-                    )}
-                    <span className="absolute bottom-0 start-0 end-0 h-0.5 bg-brand-gold scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-start" />
-                  </Link>
-                )
-              )}
-            </div>
-
-            {/* Right actions */}
-            <div className="flex items-center gap-2">
-              {/* Search */}
-              <div className="relative">
-                {searchOpen && (
-                  <input
-                    autoFocus
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder={t("nav.search")}
-                    className="absolute end-10 top-1/2 -translate-y-1/2 w-52 bg-brand-surface dark:bg-[#1A1714] border border-brand-gold/50 rounded-lg px-3 py-1.5 text-sm text-brand-text-primary dark:text-[#F5F0E8] placeholder-brand-text-secondary dark:placeholder-[#6B5E50] focus:outline-none animate-slideUp"
-                  />
-                )}
-                <button
-                  onClick={() => setSearchOpen((p) => !p)}
-                  aria-label={searchOpen ? "Close search" : "Open search"}
-                  className="w-9 h-9 flex items-center justify-center text-brand-text-secondary dark:text-[#A09080] hover:text-brand-gold dark:hover:text-[#C19A6B] transition-colors duration-200 rounded-full hover:bg-brand-card dark:hover:bg-[#242018]"
-                >
-                  {searchOpen ? <X size={18} /> : <Search size={18} />}
-                </button>
-              </div>
-
-              {/* Theme toggle — between search and cart */}
-              <ThemeToggle />
-
-              {/* Cart */}
-              <button
-                onClick={openCart}
-                className="relative w-9 h-9 flex items-center justify-center text-brand-text-secondary dark:text-[#A09080] hover:text-brand-gold dark:hover:text-[#C19A6B] transition-colors duration-200 rounded-full hover:bg-brand-card dark:hover:bg-[#242018]"
-              >
-                <ShoppingBag size={18} />
-                {count > 0 && (
-                  <span className="absolute -top-1 -end-1 w-5 h-5 bg-brand-gold text-brand-bg text-[10px] font-bold rounded-full flex items-center justify-center">
-                    {count > 9 ? "9+" : count}
-                  </span>
-                )}
-              </button>
-
-              {/* User / Account */}
-              <Link
-                href="/account"
-                aria-label="Account"
-                className={[
-                  "relative hidden sm:flex w-9 h-9 items-center justify-center transition-colors duration-200 rounded-full hover:bg-brand-card dark:hover:bg-[#242018]",
-                  user
-                    ? "text-brand-text-secondary dark:text-[#A09080] hover:text-brand-gold dark:hover:text-[#C19A6B]"
-                    : "text-brand-gold/70 dark:text-[#C19A6B]/70 hover:text-brand-gold dark:hover:text-[#C19A6B] ring-1 ring-brand-gold/40 dark:ring-[#C19A6B]/40",
-                ].join(" ")}
-              >
-                <User size={18} />
-                {user && (
-                  <span className="absolute -top-0.5 -end-0.5 w-2.5 h-2.5 rounded-full bg-brand-gold dark:bg-[#C19A6B] border-2 border-brand-bg dark:border-[#0F0D0A]" />
-                )}
-              </Link>
-
-              {/* Mobile hamburger */}
-              <button
-                onClick={() => setMobileOpen((p) => !p)}
-                aria-label={mobileOpen ? "Close menu" : "Open menu"}
-                aria-expanded={mobileOpen}
-                className="lg:hidden w-11 h-11 flex items-center justify-center text-brand-text-secondary dark:text-[#A09080] hover:text-brand-gold dark:hover:text-[#C19A6B] transition-colors duration-200 rounded-full hover:bg-brand-card dark:hover:bg-[#242018]"
-              >
-                {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-              </button>
-            </div>
-          </div>
+          ))}
         </div>
 
-        {/* Mobile menu */}
-        <div
-          className={[
-            "lg:hidden border-t border-brand-border dark:border-[#3A3228] bg-brand-surface dark:bg-[#1A1714] overflow-hidden transition-all duration-300",
-            mobileOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0",
-          ].join(" ")}
+        {/* Mobile menu button */}
+        <button
+          onClick={() => setMobileOpen((value) => !value)}
+          aria-label={mobileOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileOpen}
+          className="flex h-11 w-11 items-center justify-center lg:hidden"
         >
-          <div className="px-4 py-4 space-y-1">
+          {mobileOpen ? <X size={21} /> : <Menu size={21} />}
+        </button>
+
+        {/* Center logo */}
+        <Link href="/" className="text-center" aria-label="Maison A home">
+          <span className="block font-display text-3xl font-light leading-none tracking-normal sm:text-4xl">
+            Maison A
+          </span>
+          <span className="mt-1 block text-[0.58rem] font-medium uppercase tracking-[0.38em]">
+            Perfumes
+          </span>
+        </Link>
+
+        {/* Right navigation and actions */}
+        <div className="flex items-center justify-end gap-3">
+          <div className="hidden items-center gap-8 lg:flex">
+            {navItems.slice(2).map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="text-xs font-medium uppercase tracking-[0.22em] opacity-[0.82] hover:text-tangier"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+
+          <button
+            onClick={() => setSearchOpen((value) => !value)}
+            aria-label={searchOpen ? "Close search" : "Open search"}
+            className="hidden h-10 w-10 items-center justify-center hover:text-tangier sm:flex"
+          >
+            {searchOpen ? <X size={18} /> : <Search size={18} />}
+          </button>
+
+          <button
+            onClick={toggleLanguage}
+            className="hidden text-xs font-medium uppercase tracking-[0.22em] hover:text-tangier sm:block"
+            aria-label={lang === "en" ? "Switch to French" : "Switch to English"}
+          >
+            {lang === "en" ? "FR" : "EN"}
+          </button>
+
+          <Link
+            href="/account"
+            aria-label="Account"
+            className="hidden h-10 w-10 items-center justify-center hover:text-tangier sm:flex"
+          >
+            <User size={18} />
+            {user && <span className="ms-1 h-1.5 w-1.5 rounded-full bg-tangier" />}
+          </Link>
+
+          <button
+            onClick={openCart}
+            aria-label="Cart"
+            className="relative flex h-11 w-11 items-center justify-center hover:text-tangier"
+          >
+            <ShoppingBag size={19} />
+            {count > 0 && (
+              <span className="absolute end-0 top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-tangier px-1 text-[10px] font-medium text-bone">
+                {count > 9 ? "9+" : count}
+              </span>
+            )}
+          </button>
+        </div>
+      </nav>
+
+      {/* Search field */}
+      <div
+        className={[
+          "overflow-hidden border-t border-border bg-bone transition-all duration-300",
+          searchOpen ? "max-h-24 opacity-100" : "max-h-0 opacity-0",
+        ].join(" ")}
+      >
+        <form onSubmit={onSearch} className="mx-auto flex max-w-3xl items-center gap-3 px-5 py-4 sm:px-8">
+          <Search size={18} className="text-tangier" />
+          <input
+            autoFocus={searchOpen}
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
+            placeholder={t("nav.search")}
+            className="min-h-11 flex-1 bg-transparent text-sm text-ink placeholder:text-sand focus:outline-none"
+          />
+        </form>
+      </div>
+
+      {/* Mobile menu */}
+      <div
+        className={[
+          "overflow-hidden border-t border-border bg-bone transition-all duration-300 lg:hidden",
+          mobileOpen ? "max-h-[520px] opacity-100" : "max-h-0 opacity-0",
+        ].join(" ")}
+      >
+        <div className="px-5 py-5">
+          <div className="grid gap-1">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                className={[
-                  "flex items-center px-4 py-3 rounded-xl text-sm transition-all duration-200",
-                  item.isOffer
-                    ? "text-red-400 hover:bg-brand-red/10 font-semibold"
-                    : "text-brand-text-secondary dark:text-[#A09080] hover:text-brand-gold dark:hover:text-[#C19A6B] hover:bg-brand-card dark:hover:bg-[#242018]",
-                ].join(" ")}
+                className="py-4 text-sm font-medium uppercase tracking-[0.2em] text-ink"
               >
                 {item.label}
-                {item.isNew && (
-                  <span className="ms-2 w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
-                )}
               </Link>
             ))}
-            <div className="pt-3 border-t border-brand-border dark:border-[#3A3228] space-y-1">
-              <Link
-                href="/cart"
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 px-4 py-3 rounded-xl text-sm text-brand-text-secondary dark:text-[#A09080] hover:text-brand-gold dark:hover:text-[#C19A6B] hover:bg-brand-card dark:hover:bg-[#242018] transition-all duration-200"
-              >
-                <ShoppingBag size={16} />
-                {t("nav.cart")}
-                {count > 0 && (
-                  <span className="ms-auto bg-brand-gold text-brand-bg text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
-                    {count}
-                  </span>
-                )}
-              </Link>
-              <Link
-                href="/account"
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 px-4 py-3 rounded-xl text-sm text-brand-text-secondary dark:text-[#A09080] hover:text-brand-gold dark:hover:text-[#C19A6B] hover:bg-brand-card dark:hover:bg-[#242018] transition-all duration-200"
-              >
-                <User size={16} />
-                {lang === "fr" ? "Mon Compte" : "My Account"}
-                {user && (
-                  <span className="ms-auto w-2 h-2 rounded-full bg-brand-gold dark:bg-[#C19A6B]" />
-                )}
-              </Link>
-            </div>
+            <button
+              onClick={toggleLanguage}
+              className="py-4 text-start text-sm font-medium uppercase tracking-[0.2em] text-tangier"
+            >
+              {lang === "en" ? "Français" : "English"}
+            </button>
+            <Link
+              href="/account"
+              onClick={() => setMobileOpen(false)}
+              className="py-4 text-sm font-medium uppercase tracking-[0.2em] text-ink"
+            >
+              {lang === "fr" ? "Mon compte" : "My account"}
+            </Link>
           </div>
         </div>
-      </nav>
-    </>
+      </div>
+    </header>
   );
 }

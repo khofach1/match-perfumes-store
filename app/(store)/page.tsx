@@ -1,17 +1,15 @@
-import HeroSlider from "@/components/home/HeroSlider";
-import ExploreMatchWorld from "@/components/home/ExploreMatchWorld";
-import SelectedPackages from "@/components/home/SelectedPackages";
-import MatchBeautyBanner from "@/components/home/MatchBeautyBanner";
-import CustomerReviews from "@/components/home/CustomerReviews";
+import Hero from "@/components/Hero";
+import WorldSection from "@/components/WorldSection";
+import CollectionGrid from "@/components/CollectionGrid";
+import Newsletter from "@/components/Newsletter";
 
 export default function Home() {
   return (
     <>
-      <HeroSlider />
-      <ExploreMatchWorld />
-      <SelectedPackages />
-      <MatchBeautyBanner />
-      <CustomerReviews />
+      <Hero />
+      <WorldSection />
+      <CollectionGrid />
+      <Newsletter />
     </>
   );
 }

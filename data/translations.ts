@@ -27,13 +27,13 @@ export const translations = {
     },
     hero: {
       slide1: {
-        title: "Luxury Inspired Fragrances",
-        subtitle: "Discover the art of fine perfumery at an accessible price",
+        title: "The Finest Gulf Fragrances",
+        subtitle: "Authentic Afnan, Lattafa, Armaf & more — delivered across Morocco",
         cta: "Shop Now",
       },
       slide2: {
         title: "New Arrivals",
-        subtitle: "Fresh scents inspired by the world's finest perfume houses",
+        subtitle: "New arrivals from the Gulf's most celebrated fragrance houses",
         cta: "Discover New",
       },
     },
@@ -71,7 +71,7 @@ export const translations = {
       badge: "TESTIMONIALS",
     },
     footer: {
-      tagline: "Luxury inspired fragrances crafted for the modern Moroccan lifestyle",
+      tagline: "Authentic Gulf fragrances for the modern Moroccan lifestyle",
       vatNumber: "VAT Number: 300XXXXXXXXX",
       importantLinks: "Important Links",
       links: {
@@ -79,7 +79,7 @@ export const translations = {
         privacyPolicy: "Privacy Policy",
         refundPolicy: "Refund Policy",
         usageAgreement: "Usage Agreement",
-        inspiredPerfumes: "What are Inspired Perfumes?",
+        gulfBrands: "Gulf Fragrance Brands",
         ourBranches: "Our Branches",
       },
       downloadApp: "Download Our App",
@@ -113,7 +113,7 @@ export const translations = {
       quantity: "Quantity",
       reviews: "Reviews",
       relatedProducts: "You May Also Like",
-      inspiredBy: "Inspired by",
+      brand: "Brand",
       description: "Description",
       notes: "Fragrance Notes",
       howToUse: "How to Use",
@@ -180,13 +180,13 @@ export const translations = {
     },
     hero: {
       slide1: {
-        title: "Fragrances de luxe inspirées",
-        subtitle: "Découvrez l'art de la parfumerie fine à prix accessible",
+        title: "Les Meilleures Fragrances du Golfe",
+        subtitle: "Afnan, Lattafa, Armaf et bien plus — livrés partout au Maroc",
         cta: "Découvrir",
       },
       slide2: {
         title: "Nouveautés",
-        subtitle: "Des senteurs inspirées des plus grandes maisons de parfumerie",
+        subtitle: "Nouveautés des plus grandes maisons du Golfe",
         cta: "Explorer",
       },
     },
@@ -224,7 +224,7 @@ export const translations = {
       badge: "TÉMOIGNAGES",
     },
     footer: {
-      tagline: "Fragrances de luxe inspirées, créées pour le style de vie marocain moderne",
+      tagline: "Fragrances authentiques du Golfe pour le style de vie marocain moderne",
       vatNumber: "N° TVA : 300XXXXXXXXX",
       importantLinks: "Liens importants",
       links: {
@@ -232,7 +232,7 @@ export const translations = {
         privacyPolicy: "Politique de confidentialité",
         refundPolicy: "Politique de remboursement",
         usageAgreement: "Conditions d'utilisation",
-        inspiredPerfumes: "Que sont les parfums inspirés ?",
+        gulfBrands: "Marques du Golfe",
         ourBranches: "Nos boutiques",
       },
       downloadApp: "Télécharger notre appli",
@@ -266,7 +266,7 @@ export const translations = {
       quantity: "Quantité",
       reviews: "Avis",
       relatedProducts: "Vous aimerez aussi",
-      inspiredBy: "Inspiré de",
+      brand: "Marque",
       description: "Description",
       notes: "Notes olfactives",
       howToUse: "Comment utiliser",

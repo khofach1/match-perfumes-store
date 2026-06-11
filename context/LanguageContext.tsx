@@ -39,6 +39,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     document.documentElement.lang = lang;
+    document.documentElement.dir = (lang as string) === "ar" ? "rtl" : "ltr";
   }, [lang]);
 
   const toggleLanguage = useCallback(() => {

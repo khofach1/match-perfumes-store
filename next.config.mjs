@@ -1,6 +1,7 @@
 
 const nextConfig = {
   images: {
+    unoptimized: true,
     domains: ["images.unsplash.com", "source.unsplash.com", "picsum.photos"],
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
