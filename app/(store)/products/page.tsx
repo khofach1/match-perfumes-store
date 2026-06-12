@@ -8,8 +8,7 @@ import { products } from "@/data/products";
 import ProductCard from "@/components/ui/ProductCard";
 import { Suspense } from "react";
 
-type Category = "all" | "women" | "men" | "unisex" | "niche" | "gifts";
-type SortOption = "default" | "price-asc" | "price-desc" | "rating" | "newest";
+type Category = "all" | "women" | "men" | "unisex" | "gifts";
 
 function ProductsContent() {
   const { t, lang } = useLanguage();
@@ -18,11 +17,6 @@ function ProductsContent() {
   const initialCategory = (searchParams.get("category") as Category) ?? "all";
   const showOffers = searchParams.get("offer") === "true";
   const showNew = searchParams.get("new") === "true";
-
-  const maxProductPrice = useMemo(
-    () => Math.max(...products.map((p) => p.price)) + 100,
-    []
-  );
 
   const brands = useMemo(
     () => Array.from(new Set(products.map((p) => p.brand))).sort(),
@@ -33,37 +27,21 @@ function ProductsContent() {
     initialCategory !== "all" ? initialCategory : "all"
   );
   const [selectedBrand, setSelectedBrand] = useState<string>("all");
-  const [priceMax, setPriceMax] = useState(() => maxProductPrice);
-  const [sortBy, setSortBy] = useState<SortOption>("default");
 
   const categories: { key: Category; label_en: string; label_fr: string }[] = [
-    { key: "all", label_en: "All", label_fr: "Tous" },
-    { key: "women", label_en: "Women", label_fr: "Femmes" },
-    { key: "men", label_en: "Men", label_fr: "Hommes" },
-    { key: "unisex", label_en: "Unisex", label_fr: "Unisexe" },
-    { key: "niche", label_en: "Niche", label_fr: "Niche" },
-    { key: "gifts", label_en: "Gifts", label_fr: "Coffrets" },
-  ];
-
-  const sortOptions: { value: SortOption; label_en: string; label_fr: string }[] = [
-    { value: "default", label_en: "Featured", label_fr: "À la une" },
-    { value: "price-asc", label_en: "Price: Low → High", label_fr: "Prix croissant" },
-    { value: "price-desc", label_en: "Price: High → Low", label_fr: "Prix décroissant" },
-    { value: "rating", label_en: "Top Rated", label_fr: "Mieux notés" },
-    { value: "newest", label_en: "New Arrivals", label_fr: "Nouveautés" },
+    { key: "all",    label_en: "All",    label_fr: "Tous"     },
+    { key: "women",  label_en: "Women",  label_fr: "Femmes"   },
+    { key: "men",    label_en: "Men",    label_fr: "Hommes"   },
+    { key: "unisex", label_en: "Unisex", label_fr: "Unisexe"  },
+    { key: "gifts",  label_en: "Gifts",  label_fr: "Coffrets" },
   ];
 
   const hasActiveFilters =
-    selectedCategory !== "all" ||
-    selectedBrand !== "all" ||
-    priceMax < maxProductPrice ||
-    sortBy !== "default";
+    selectedCategory !== "all" || selectedBrand !== "all";
 
   const clearFilters = () => {
     setSelectedCategory("all");
     setSelectedBrand("all");
-    setPriceMax(maxProductPrice);
-    setSortBy("default");
   };
 
   const filteredProducts = useMemo(() => {
@@ -78,27 +56,10 @@ function ProductsContent() {
     }
 
     if (showOffers) result = result.filter((p) => p.isOffer);
-    if (showNew) result = result.filter((p) => p.isNew);
-
-    result = result.filter((p) => p.price <= priceMax);
-
-    switch (sortBy) {
-      case "price-asc":
-        result.sort((a, b) => a.price - b.price);
-        break;
-      case "price-desc":
-        result.sort((a, b) => b.price - a.price);
-        break;
-      case "rating":
-        result.sort((a, b) => b.rating - a.rating);
-        break;
-      case "newest":
-        result = result.filter((p) => p.isNew).concat(result.filter((p) => !p.isNew));
-        break;
-    }
+    if (showNew)    result = result.filter((p) => p.isNew);
 
     return result;
-  }, [selectedCategory, selectedBrand, priceMax, sortBy, showOffers, showNew]);
+  }, [selectedCategory, selectedBrand, showOffers, showNew]);
 
   return (
     <div className="min-h-screen bg-bone">
@@ -170,50 +131,11 @@ function ProductsContent() {
               />
             </div>
 
-            {/* Price range */}
-            <div className="flex flex-shrink-0 items-center gap-2.5">
-              <span className="whitespace-nowrap text-[0.65rem] font-medium uppercase tracking-[0.18em] text-sand">
-                {lang === "fr" ? "Max" : "Max"} {priceMax}{" "}
-                {t("currency")}
-              </span>
-              <input
-                type="range"
-                min={0}
-                max={maxProductPrice}
-                step={10}
-                value={priceMax}
-                onChange={(e) => setPriceMax(Number(e.target.value))}
-                className="w-20 cursor-pointer accent-ink sm:w-28"
-              />
-            </div>
-
-            {/* Divider */}
-            <div className="mx-1 h-5 w-px flex-shrink-0 bg-border" />
-
-            {/* Sort */}
-            <div className="relative ml-auto flex-shrink-0">
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as SortOption)}
-                className="cursor-pointer appearance-none border border-border bg-transparent py-1.5 pl-4 pr-8 text-[0.68rem] font-medium uppercase tracking-[0.18em] text-sand transition-all duration-200 hover:border-ink-soft hover:text-ink focus:outline-none"
-              >
-                {sortOptions.map((o) => (
-                  <option key={o.value} value={o.value}>
-                    {lang === "fr" ? o.label_fr : o.label_en}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown
-                size={11}
-                className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-sand"
-              />
-            </div>
-
             {/* Clear filters */}
             {hasActiveFilters && (
               <button
                 onClick={clearFilters}
-                className="flex flex-shrink-0 items-center gap-1.5 text-[0.65rem] font-medium uppercase tracking-[0.18em] text-sand transition-colors duration-200 hover:text-ink"
+                className="ml-auto flex flex-shrink-0 items-center gap-1.5 text-[0.65rem] font-medium uppercase tracking-[0.18em] text-sand transition-colors duration-200 hover:text-ink"
               >
                 <X size={11} />
                 {lang === "fr" ? "Effacer" : "Clear"}
