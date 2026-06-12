@@ -22,10 +22,10 @@ export default function Footer() {
         <div>
           <Link href="/" className="inline-block">
             <span className="block font-display text-5xl font-light leading-none text-ink">
-              Maison A
+              Anar
             </span>
             <span className="mt-2 block text-[0.62rem] font-medium uppercase tracking-[0.34em] text-tangier">
-              Tanger
+              Perfumes
             </span>
           </Link>
           <p className="mt-7 max-w-sm text-sm leading-7 text-ink-soft">
@@ -90,7 +90,7 @@ export default function Footer() {
       </div>
 
       <div className="mx-auto max-w-7xl border-t border-border py-6 text-center text-xs text-sand">
-        <p>© 2026 MAISON A · TANGER · CASABLANCA · TOUS DROITS RÉSERVÉS</p>
+        <p>© 2026 ANAR PERFUMES · TANGER · CASABLANCA · TOUS DROITS RÉSERVÉS</p>
       </div>
     </footer>
   );

@@ -13,7 +13,7 @@ export default function WorldSection() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
           <p className="mb-8 text-[10px] font-medium uppercase tracking-[0.32em] text-bone/40">
-            Maison A — Tanger
+            Anar Perfumes — Tanger
           </p>
 
           <h2 className="font-display text-display-md font-light leading-none text-bone">

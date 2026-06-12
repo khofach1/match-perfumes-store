@@ -139,7 +139,7 @@ export default function CartSidebar() {
             </div>
             <a
               href={`https://wa.me/212665342318?text=${encodeURIComponent(
-                `Bonjour Maison A,\n\nJe souhaite commander :\n${items.map((i) => `- ${i.name} (${i.size}) ×${i.quantity} — ${(i.price * i.quantity).toFixed(0)} DH`).join("\n")}\n\nTotal : ${total.toFixed(0)} DH`
+                `Bonjour Anar Perfumes,\n\nJe souhaite commander :\n${items.map((i) => `- ${i.name} (${i.size}) ×${i.quantity} — ${(i.price * i.quantity).toFixed(0)} DH`).join("\n")}\n\nTotal : ${total.toFixed(0)} DH`
               )}`}
               target="_blank"
               rel="noopener noreferrer"

@@ -74,9 +74,9 @@ export default function Navbar() {
         </button>
 
         {/* Center logo */}
-        <Link href="/" className="text-center" aria-label="Maison A home">
+        <Link href="/" className="text-center" aria-label="Anar Perfumes home">
           <span className="block font-display text-3xl font-light leading-none tracking-normal sm:text-4xl">
-            Maison A
+            Anar
           </span>
           <span className="mt-1 block text-[0.58rem] font-medium uppercase tracking-[0.38em]">
             Perfumes
