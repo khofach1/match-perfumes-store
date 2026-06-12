@@ -28,13 +28,13 @@ const getNestedValue = (obj: Record<string, unknown>, path: string): string => {
 };
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLang] = useState<Lang>("en");
+  // Default to "fr" — matches server render so no hydration mismatch.
+  // useEffect then applies any stored preference after mount.
+  const [lang, setLang] = useState<Lang>("fr");
 
   useEffect(() => {
     const stored = localStorage.getItem("anar-lang") as Lang | null;
-    if (stored === "en" || stored === "fr") {
-      setLang(stored);
-    }
+    if (stored === "en" || stored === "fr") setLang(stored);
   }, []);
 
   useEffect(() => {

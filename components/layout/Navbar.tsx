@@ -1,6 +1,8 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
+
+const BRAND_NAME = "ANAR" as const;
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Menu, Search, ShoppingBag, User, X } from "lucide-react";
@@ -75,10 +77,10 @@ export default function Navbar() {
 
         {/* Center logo */}
         <Link href="/" className="text-center" aria-label="Anar Perfumes home">
-          <span className="block font-display text-3xl font-light leading-none tracking-normal sm:text-4xl">
-            Anar
+          <span suppressHydrationWarning className="block font-display text-3xl font-light leading-none tracking-normal sm:text-4xl">
+            {BRAND_NAME}
           </span>
-          <span className="mt-1 block text-[0.58rem] font-medium uppercase tracking-[0.38em]">
+          <span suppressHydrationWarning className="mt-1 block text-[0.58rem] font-medium uppercase tracking-[0.38em]">
             Perfumes
           </span>
         </Link>
