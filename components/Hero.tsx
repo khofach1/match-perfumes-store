@@ -1,41 +1,26 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
-
-const HERO_IMAGE = "https://images.unsplash.com/photo-1539020140153-e479b8c08e3a?w=1920&q=80";
 
 export default function Hero() {
   const { lang } = useLanguage();
   const isFr = lang === "fr";
 
   return (
-    <section className="relative h-screen w-full overflow-hidden">
-      {/* Full-bleed image */}
-      <Image
-        src={HERO_IMAGE}
-        alt="Gulf fragrances — authentic Afnan, Lattafa, Armaf delivered across Morocco"
-        fill
-        priority
-        className="object-cover"
-        sizes="100vw"
-      />
+    <section className="relative flex h-screen w-full flex-col items-center justify-end overflow-hidden bg-[#1A1A18] pb-32">
+      {/* Subtle depth gradient — no image required */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(255,255,255,0.04)_0%,transparent_100%)]" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-[#1A1A18] to-transparent" />
 
-      {/* Dark veil for legibility */}
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(26,22,20,0.25)_0%,rgba(26,22,20,0.15)_50%,rgba(26,22,20,0.38)_100%)]" />
-
-      {/* Bottom bone gradient lifts text off image */}
-      <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-bone/40 to-transparent" />
-
-      {/* Editorial copy — bottom third */}
-      <div className="absolute inset-x-0 bottom-0 flex flex-col items-center pb-32 text-center px-6">
+      {/* Editorial copy */}
+      <div className="relative z-10 flex flex-col items-center px-6 text-center">
         <motion.p
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-6 text-[10px] font-medium uppercase tracking-[0.28em] text-bone/80"
+          className="mb-6 text-[10px] font-medium uppercase tracking-[0.28em] text-bone/60"
         >
           {isFr ? "Fragrances du Golfe — Maroc, Est. 2026" : "Gulf Fragrances — Morocco, Est. 2026"}
         </motion.p>
@@ -44,16 +29,16 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="font-display text-display-xl font-light text-bone leading-none"
+          className="font-display text-display-xl font-light leading-none text-bone"
         >
-          {isFr ? "Les Meilleures Fragrances du Golfe" : "The Finest Gulf Fragrances"}
+          {isFr ? "Les Meilleures\nFragrances du Golfe" : "The Finest\nGulf Fragrances"}
         </motion.h1>
 
         <motion.div
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
           transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="my-6 h-px w-15 bg-bone/50 origin-center"
+          className="my-6 h-px origin-center bg-bone/30"
           style={{ width: "60px" }}
         />
 
@@ -61,11 +46,11 @@ export default function Hero() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
-          className="font-display text-lg italic font-light text-bone/85"
+          className="font-display text-lg font-light italic text-bone/70"
         >
           {isFr
-            ? "Afnan, Lattafa, Armaf et bien plus — livrés partout au Maroc"
-            : "Authentic Afnan, Lattafa, Armaf & more — delivered across Morocco"}
+            ? "Les fragrances du Golfe, authentiques et livrées partout au Maroc"
+            : "Authentic Gulf fragrances delivered across Morocco"}
         </motion.p>
 
         <motion.div
@@ -76,7 +61,7 @@ export default function Hero() {
         >
           <Link
             href="/products"
-            className="inline-flex items-center border border-bone/60 px-8 py-3 text-[10px] font-medium uppercase tracking-[0.22em] text-bone/90 hover:bg-bone/10 transition-colors duration-300"
+            className="inline-flex items-center border border-bone/40 px-8 py-3 text-[10px] font-medium uppercase tracking-[0.22em] text-bone/80 transition-all duration-300 hover:border-bone/80 hover:bg-bone/10 hover:text-bone"
           >
             {isFr ? "Découvrir" : "Shop Now"}
           </Link>
@@ -88,12 +73,12 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 1.6 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2"
       >
         <motion.span
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="text-[9px] font-medium uppercase tracking-[0.3em] text-bone/50"
+          className="block text-[9px] font-medium uppercase tracking-[0.3em] text-bone/40"
         >
           {isFr ? "↓ Découvrir" : "↓ Explore"}
         </motion.span>

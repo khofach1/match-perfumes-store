@@ -38,7 +38,6 @@ export default function Navbar() {
 
   const navItems = [
     { label: "SHOP", href: "/products" },
-    { label: "WORLD", href: "/#world" },
   ];
 
   return (
