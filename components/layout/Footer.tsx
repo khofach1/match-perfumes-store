@@ -66,14 +66,18 @@ export default function Footer() {
               Instagram
             </a>
             <a
-              href="#"
+              href="https://www.tiktok.com/@anae"
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center gap-2 text-sm text-ink-soft hover:text-tangier"
             >
               <FaTiktok size={14} />
               TikTok
             </a>
             <a
-              href="#"
+              href="https://www.facebook.com/anar"
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center gap-2 text-sm text-ink-soft hover:text-tangier"
             >
               <FaFacebook size={14} />
