@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
@@ -10,9 +11,17 @@ export default function Hero() {
 
   return (
     <section className="relative flex h-screen w-full flex-col items-center justify-end overflow-hidden bg-[#1A1A18] pb-32">
-      {/* Subtle depth gradient — no image required */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(255,255,255,0.04)_0%,transparent_100%)]" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-[#1A1A18] to-transparent" />
+      {/* Hero image */}
+      <Image
+        src="/images/hero/hero.png"
+        alt="Anar Perfumes"
+        fill
+        priority
+        className="object-cover"
+      />
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-black/40" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-black/60 to-transparent" />
 
       {/* Editorial copy */}
       <div className="relative z-10 flex flex-col items-center px-6 text-center">
