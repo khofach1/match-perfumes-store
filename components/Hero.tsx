@@ -53,36 +53,18 @@ export default function Hero() {
             : "Authentic fragrances delivered across Morocco"}
         </motion.p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 1.1, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-8"
+        <Link
+          href="/products"
+          className="mt-8 inline-flex items-center border border-bone/40 px-8 py-3 text-[10px] font-medium uppercase tracking-[0.22em] text-bone/80 transition-all duration-300 hover:border-bone/80 hover:bg-bone/10 hover:text-bone"
         >
-          <Link
-            href="/products"
-            className="inline-flex items-center border border-bone/40 px-8 py-3 text-[10px] font-medium uppercase tracking-[0.22em] text-bone/80 transition-all duration-300 hover:border-bone/80 hover:bg-bone/10 hover:text-bone"
-          >
-            {isFr ? "Découvrir" : "Shop Now"}
-          </Link>
-        </motion.div>
+          {isFr ? "Découvrir" : "Shop Now"}
+        </Link>
       </div>
 
       {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 1.6 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-      >
-        <motion.span
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="block text-[9px] font-medium uppercase tracking-[0.3em] text-bone/40"
-        >
-          {isFr ? "↓ Découvrir" : "↓ Explore"}
-        </motion.span>
-      </motion.div>
+      <span className="absolute bottom-8 left-1/2 -translate-x-1/2 block text-[9px] font-medium uppercase tracking-[0.3em] text-bone/40">
+        {isFr ? "↓ Découvrir" : "↓ Explore"}
+      </span>
     </section>
   );
 }

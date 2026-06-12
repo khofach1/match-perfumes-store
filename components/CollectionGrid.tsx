@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { products } from "@/data/products";
+import { useLanguage } from "@/context/LanguageContext";
 import ProductCard from "@/components/ui/ProductCard";
 
 const reveal = {
@@ -12,23 +13,25 @@ const reveal = {
 };
 
 export default function CollectionGrid() {
+  const { lang } = useLanguage();
+
   return (
-    <section className="bg-bone px-5 pb-28 sm:px-8 lg:pb-40">
+    <section className="bg-bone px-5 pb-28 pt-20 sm:px-8 lg:pb-40">
       <div className="mx-auto max-w-7xl">
-        {/* Collection heading */}
+        {/* Section heading */}
         <motion.div {...reveal} className="mb-14">
-          <p className="mb-5 text-eyebrow font-medium uppercase text-tangier">
-            LA COLLECTION
+          <p className="mb-3 text-eyebrow font-medium uppercase text-sand">
+            {lang === "fr" ? "Collection" : "Collection"}
           </p>
           <h2 className="font-display text-display-md font-light text-ink">
-            Sept fragrances. Une terrasse.
+            {lang === "fr" ? "Nos Fragrances" : "Our Fragrances"}
           </h2>
         </motion.div>
 
         {/* Product grid */}
         <motion.div
           {...reveal}
-          className="grid grid-cols-1 gap-x-6 gap-y-16 md:grid-cols-2 lg:grid-cols-3"
+          className="grid grid-cols-2 gap-x-6 gap-y-16 lg:grid-cols-3"
         >
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />

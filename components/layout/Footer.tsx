@@ -30,8 +30,8 @@ export default function Footer() {
           </Link>
           <p className="mt-7 max-w-sm text-sm leading-7 text-ink-soft">
             {isFr
-              ? "Maison de parfum fondée sur une terrasse de Tanger. Sept fragrances, une seule intention."
-              : "A perfume house founded on a Tangier rooftop. Seven fragrances, one intention."}
+              ? "Des fragrances authentiques, soigneusement sélectionnées et livrées partout au Maroc."
+              : "Authentic fragrances, carefully curated and delivered across Morocco."}
           </p>
         </div>
 
