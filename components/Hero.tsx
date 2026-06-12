@@ -22,7 +22,7 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="mb-6 text-[10px] font-medium uppercase tracking-[0.28em] text-bone/60"
         >
-          {isFr ? "Fragrances du Golfe — Maroc, Est. 2026" : "Gulf Fragrances — Morocco, Est. 2026"}
+          {isFr ? "Anar Perfumes — Maroc, Est. 2026" : "Anar Perfumes — Morocco, Est. 2026"}
         </motion.p>
 
         <motion.h1
@@ -31,7 +31,7 @@ export default function Hero() {
           transition={{ duration: 1.2, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           className="font-display text-display-xl font-light leading-none text-bone"
         >
-          {isFr ? "Les Meilleures\nFragrances du Golfe" : "The Finest\nGulf Fragrances"}
+          {isFr ? "Les Meilleures\nFragrances" : "The Finest\nFragrances"}
         </motion.h1>
 
         <motion.div
@@ -49,8 +49,8 @@ export default function Hero() {
           className="font-display text-lg font-light italic text-bone/70"
         >
           {isFr
-            ? "Les fragrances du Golfe, authentiques et livrées partout au Maroc"
-            : "Authentic Gulf fragrances delivered across Morocco"}
+            ? "Les fragrances authentiques livrées partout au Maroc"
+            : "Authentic fragrances delivered across Morocco"}
         </motion.p>
 
         <motion.div

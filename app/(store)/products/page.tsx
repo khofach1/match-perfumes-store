@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
-import { Filter, X, ChevronDown } from "lucide-react";
+import { ChevronDown, X } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { products } from "@/data/products";
 import ProductCard from "@/components/ui/ProductCard";
@@ -19,58 +19,69 @@ function ProductsContent() {
   const showOffers = searchParams.get("offer") === "true";
   const showNew = searchParams.get("new") === "true";
 
-  const [selectedCategories, setSelectedCategories] = useState<Category[]>(
-    initialCategory && initialCategory !== "all" ? [initialCategory] : []
+  const maxProductPrice = useMemo(
+    () => Math.max(...products.map((p) => p.price)) + 100,
+    []
   );
-  const [priceMax, setPriceMax] = useState(300);
+
+  const brands = useMemo(
+    () => Array.from(new Set(products.map((p) => p.brand))).sort(),
+    []
+  );
+
+  const [selectedCategory, setSelectedCategory] = useState<Category>(
+    initialCategory !== "all" ? initialCategory : "all"
+  );
+  const [selectedBrand, setSelectedBrand] = useState<string>("all");
+  const [priceMax, setPriceMax] = useState(() => maxProductPrice);
   const [sortBy, setSortBy] = useState<SortOption>("default");
-  const [filtersOpen, setFiltersOpen] = useState(false);
 
   const categories: { key: Category; label_en: string; label_fr: string }[] = [
-    { key: "all", label_en: "All Categories", label_fr: "Toutes les catégories" },
-    { key: "women", label_en: "Women's", label_fr: "Femmes" },
-    { key: "men", label_en: "Men's", label_fr: "Hommes" },
+    { key: "all", label_en: "All", label_fr: "Tous" },
+    { key: "women", label_en: "Women", label_fr: "Femmes" },
+    { key: "men", label_en: "Men", label_fr: "Hommes" },
     { key: "unisex", label_en: "Unisex", label_fr: "Unisexe" },
     { key: "niche", label_en: "Niche", label_fr: "Niche" },
-    { key: "gifts", label_en: "Gifts & Sets", label_fr: "Coffrets & Sets" },
+    { key: "gifts", label_en: "Gifts", label_fr: "Coffrets" },
   ];
 
   const sortOptions: { value: SortOption; label_en: string; label_fr: string }[] = [
-    { value: "default", label_en: "Default", label_fr: "Par défaut" },
-    { value: "price-asc", label_en: "Price: Low to High", label_fr: "Prix croissant" },
-    { value: "price-desc", label_en: "Price: High to Low", label_fr: "Prix décroissant" },
+    { value: "default", label_en: "Featured", label_fr: "À la une" },
+    { value: "price-asc", label_en: "Price: Low → High", label_fr: "Prix croissant" },
+    { value: "price-desc", label_en: "Price: High → Low", label_fr: "Prix décroissant" },
     { value: "rating", label_en: "Top Rated", label_fr: "Mieux notés" },
-    { value: "newest", label_en: "Newest", label_fr: "Nouveautés" },
+    { value: "newest", label_en: "New Arrivals", label_fr: "Nouveautés" },
   ];
 
-  const toggleCategory = (cat: Category) => {
-    if (cat === "all") {
-      setSelectedCategories([]);
-      return;
-    }
-    setSelectedCategories((prev) =>
-      prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat]
-    );
+  const hasActiveFilters =
+    selectedCategory !== "all" ||
+    selectedBrand !== "all" ||
+    priceMax < maxProductPrice ||
+    sortBy !== "default";
+
+  const clearFilters = () => {
+    setSelectedCategory("all");
+    setSelectedBrand("all");
+    setPriceMax(maxProductPrice);
+    setSortBy("default");
   };
 
   const filteredProducts = useMemo(() => {
     let result = [...products];
 
-    // Category filter
-    if (selectedCategories.length > 0) {
-      result = result.filter((p) =>
-        selectedCategories.includes(p.category as Category)
-      );
+    if (selectedCategory !== "all") {
+      result = result.filter((p) => p.category === selectedCategory);
     }
 
-    // Offer filter
+    if (selectedBrand !== "all") {
+      result = result.filter((p) => p.brand === selectedBrand);
+    }
+
     if (showOffers) result = result.filter((p) => p.isOffer);
     if (showNew) result = result.filter((p) => p.isNew);
 
-    // Price filter
     result = result.filter((p) => p.price <= priceMax);
 
-    // Sort
     switch (sortBy) {
       case "price-asc":
         result.sort((a, b) => a.price - b.price);
@@ -87,229 +98,156 @@ function ProductsContent() {
     }
 
     return result;
-  }, [selectedCategories, priceMax, sortBy, showOffers, showNew]);
+  }, [selectedCategory, selectedBrand, priceMax, sortBy, showOffers, showNew]);
 
   return (
-    <div className="min-h-screen bg-brand-bg dark:bg-[#0F0D0A]">
+    <div className="min-h-screen bg-bone">
       {/* Page header */}
-      <div className="bg-brand-surface dark:bg-[#1A1714] border-b border-brand-border dark:border-[#3A3228] py-12 px-4 sm:px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="inline-flex items-center gap-2 mb-3">
-            <span className="h-px w-8 bg-brand-gold dark:bg-[#C19A6B]" />
-            <span className="text-brand-gold dark:text-[#C19A6B] text-xs uppercase tracking-widest">
-              Shop
-            </span>
-          </div>
-          <h1 className="text-4xl font-bold text-brand-text-primary dark:text-[#F5F0E8] font-heading">
+      <div className="border-b border-border px-4 py-24 sm:px-8">
+        <div className="mx-auto max-w-7xl">
+          <p className="mb-3 text-[0.65rem] font-medium uppercase tracking-[0.32em] text-sand">
+            {lang === "fr" ? "Collection" : "Collection"}
+          </p>
+          <h1 className="font-display text-5xl font-light text-ink sm:text-6xl">
             {showOffers
               ? t("nav.offers")
               : showNew
               ? t("nav.newArrival")
-              : t("common.allCategories")}
+              : lang === "fr"
+              ? "Tous les Produits"
+              : "All Products"}
           </h1>
-          <p className="text-brand-text-secondary dark:text-[#A09080] mt-2">
+          <p className="mt-4 text-sm text-sand">
             {filteredProducts.length}{" "}
-            {lang === "fr" ? "produits trouvés" : "products found"}
+            {lang === "fr" ? "références" : "references"}
           </p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-        {/* Mobile filter toggle */}
-        <div className="flex items-center justify-between mb-6 lg:hidden">
-          <button
-            onClick={() => setFiltersOpen((p) => !p)}
-            className="flex items-center gap-2 border border-brand-border dark:border-[#3A3228] px-4 py-2 rounded-lg text-brand-text-secondary dark:text-[#A09080] hover:border-brand-gold dark:hover:border-[#C19A6B] hover:text-brand-gold dark:hover:text-[#C19A6B] transition-all duration-200"
-          >
-            <Filter size={16} />
-            {t("common.filters")}
-          </button>
+      {/* Horizontal filter bar */}
+      <div className="sticky top-0 z-30 border-b border-border bg-bone/95 backdrop-blur-sm">
+        <div className="mx-auto max-w-7xl px-4 sm:px-8">
+          <div className="flex items-center gap-2 overflow-x-auto py-4 scrollbar-none sm:gap-3">
 
-          {/* Sort dropdown */}
-          <div className="relative">
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as SortOption)}
-              className="appearance-none bg-brand-surface dark:bg-[#1A1714] border border-brand-border dark:border-[#3A3228] rounded-lg px-4 py-2 text-sm text-brand-text-primary dark:text-[#F5F0E8] pr-8 focus:outline-none focus:border-brand-gold dark:focus:border-[#C19A6B]"
-            >
-              {sortOptions.map((o) => (
-                <option key={o.value} value={o.value}>
-                  {lang === "fr" ? o.label_fr : o.label_en}
-                </option>
-              ))}
-            </select>
-            <ChevronDown size={14} className="absolute end-2 top-1/2 -translate-y-1/2 text-brand-text-secondary pointer-events-none" />
-          </div>
-        </div>
-
-        <div className="flex gap-8">
-          {/* Sidebar Filters */}
-          <aside
-            className={[
-              "w-64 flex-shrink-0 space-y-8",
-              "lg:block",
-              filtersOpen ? "block" : "hidden",
-              "lg:sticky lg:top-24 lg:self-start",
-            ].join(" ")}
-          >
-            {/* Mobile close */}
-            <div className="flex items-center justify-between lg:hidden mb-4">
-              <span className="text-brand-text-primary dark:text-[#F5F0E8] font-semibold">
-                {t("common.filters")}
-              </span>
+            {/* Category pills */}
+            {categories.map((cat) => (
               <button
-                onClick={() => setFiltersOpen(false)}
-                className="text-brand-text-secondary dark:text-[#A09080] hover:text-brand-text-primary dark:hover:text-[#F5F0E8]"
+                key={cat.key}
+                onClick={() => setSelectedCategory(cat.key)}
+                className={[
+                  "flex-shrink-0 border px-4 py-1.5 text-[0.68rem] font-medium uppercase tracking-[0.18em] transition-all duration-200",
+                  selectedCategory === cat.key
+                    ? "border-ink bg-ink text-bone"
+                    : "border-border text-sand hover:border-ink-soft hover:text-ink",
+                ].join(" ")}
               >
-                <X size={18} />
+                {lang === "fr" ? cat.label_fr : cat.label_en}
               </button>
+            ))}
+
+            {/* Divider */}
+            <div className="mx-1 h-5 w-px flex-shrink-0 bg-border" />
+
+            {/* Brand dropdown */}
+            <div className="relative flex-shrink-0">
+              <select
+                value={selectedBrand}
+                onChange={(e) => setSelectedBrand(e.target.value)}
+                className="cursor-pointer appearance-none border border-border bg-transparent py-1.5 pl-4 pr-8 text-[0.68rem] font-medium uppercase tracking-[0.18em] text-sand transition-all duration-200 hover:border-ink-soft hover:text-ink focus:outline-none"
+              >
+                <option value="all">
+                  {lang === "fr" ? "Marque" : "Brand"}
+                </option>
+                {brands.map((b) => (
+                  <option key={b} value={b}>
+                    {b}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown
+                size={11}
+                className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-sand"
+              />
             </div>
 
-            {/* Categories */}
-            <div className="bg-brand-card dark:bg-[#242018] border border-brand-border dark:border-[#3A3228] rounded-2xl p-5">
-              <h3 className="text-brand-text-primary dark:text-[#F5F0E8] font-semibold text-sm uppercase tracking-widest mb-4">
-                {t("common.category")}
-              </h3>
-              <div className="space-y-2">
-                {categories.map((cat) => {
-                  const isSelected =
-                    cat.key === "all"
-                      ? selectedCategories.length === 0
-                      : selectedCategories.includes(cat.key);
-                  return (
-                    <button
-                      key={cat.key}
-                      onClick={() => toggleCategory(cat.key)}
-                      className={[
-                        "w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-all duration-200",
-                        isSelected
-                          ? "bg-brand-gold/10 text-brand-gold border border-brand-gold/30"
-                          : "text-brand-text-secondary dark:text-[#A09080] hover:text-brand-text-primary dark:hover:text-[#F5F0E8] hover:bg-brand-surface dark:hover:bg-[#1A1714]",
-                      ].join(" ")}
-                    >
-                      <span>{lang === "fr" ? cat.label_fr : cat.label_en}</span>
-                      {isSelected && (
-                        <span className="w-2 h-2 rounded-full bg-brand-gold" />
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
+            {/* Price range */}
+            <div className="flex flex-shrink-0 items-center gap-2.5">
+              <span className="whitespace-nowrap text-[0.65rem] font-medium uppercase tracking-[0.18em] text-sand">
+                {lang === "fr" ? "Max" : "Max"} {priceMax}{" "}
+                {t("currency")}
+              </span>
+              <input
+                type="range"
+                min={0}
+                max={maxProductPrice}
+                step={10}
+                value={priceMax}
+                onChange={(e) => setPriceMax(Number(e.target.value))}
+                className="w-20 cursor-pointer accent-ink sm:w-28"
+              />
             </div>
 
-            {/* Price Range */}
-            <div className="bg-brand-card dark:bg-[#242018] border border-brand-border dark:border-[#3A3228] rounded-2xl p-5">
-              <h3 className="text-brand-text-primary dark:text-[#F5F0E8] font-semibold text-sm uppercase tracking-widest mb-4">
-                {t("common.priceRange")}
-              </h3>
-              <div className="space-y-3">
-                <div className="flex justify-between text-sm">
-                  <span className="text-brand-text-secondary dark:text-[#A09080]">0 {t("currency")}</span>
-                  <span className="text-brand-gold font-medium">
-                    {priceMax} {t("currency")}
-                  </span>
-                </div>
-                <input
-                  type="range"
-                  min={0}
-                  max={300}
-                  step={10}
-                  value={priceMax}
-                  onChange={(e) => setPriceMax(Number(e.target.value))}
-                  className="w-full accent-brand-gold cursor-pointer"
-                />
-                <div className="flex justify-between text-xs text-brand-text-secondary dark:text-[#A09080]">
-                  <span>0</span>
-                  <span>300 {t("currency")}</span>
-                </div>
-              </div>
-            </div>
+            {/* Divider */}
+            <div className="mx-1 h-5 w-px flex-shrink-0 bg-border" />
 
-            {/* Sort (desktop) */}
-            <div className="hidden lg:block bg-brand-card dark:bg-[#242018] border border-brand-border dark:border-[#3A3228] rounded-2xl p-5">
-              <h3 className="text-brand-text-primary dark:text-[#F5F0E8] font-semibold text-sm uppercase tracking-widest mb-4">
-                {t("common.sortBy")}
-              </h3>
-              <div className="space-y-1">
+            {/* Sort */}
+            <div className="relative ml-auto flex-shrink-0">
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as SortOption)}
+                className="cursor-pointer appearance-none border border-border bg-transparent py-1.5 pl-4 pr-8 text-[0.68rem] font-medium uppercase tracking-[0.18em] text-sand transition-all duration-200 hover:border-ink-soft hover:text-ink focus:outline-none"
+              >
                 {sortOptions.map((o) => (
-                  <button
-                    key={o.value}
-                    onClick={() => setSortBy(o.value)}
-                    className={[
-                      "w-full text-start px-3 py-2 rounded-lg text-sm transition-all duration-200",
-                      sortBy === o.value
-                        ? "bg-brand-gold/10 text-brand-gold"
-                        : "text-brand-text-secondary dark:text-[#A09080] hover:text-brand-text-primary dark:hover:text-[#F5F0E8] hover:bg-brand-surface dark:hover:bg-[#1A1714]",
-                    ].join(" ")}
-                  >
+                  <option key={o.value} value={o.value}>
                     {lang === "fr" ? o.label_fr : o.label_en}
-                  </button>
+                  </option>
                 ))}
-              </div>
-            </div>
-          </aside>
-
-          {/* Product Grid */}
-          <div className="flex-1 min-w-0">
-            {/* Category tabs — quick filter row */}
-            <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-1 -mx-1 px-1">
-              {categories.map((cat) => {
-                const isActive =
-                  cat.key === "all"
-                    ? selectedCategories.length === 0
-                    : selectedCategories.length === 1 &&
-                      selectedCategories[0] === cat.key;
-                return (
-                  <button
-                    key={cat.key}
-                    onClick={() => {
-                      if (cat.key === "all") {
-                        setSelectedCategories([]);
-                      } else {
-                        setSelectedCategories([cat.key]);
-                      }
-                    }}
-                    className={[
-                      "flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 whitespace-nowrap min-h-[40px]",
-                      isActive
-                        ? "bg-brand-gold text-brand-bg shadow-gold"
-                        : "bg-brand-card dark:bg-[#242018] border border-brand-border dark:border-[#3A3228] text-brand-text-secondary dark:text-[#A09080] hover:border-brand-gold dark:hover:border-[#C19A6B] hover:text-brand-gold dark:hover:text-[#C19A6B]",
-                    ].join(" ")}
-                  >
-                    {lang === "fr" ? cat.label_fr : cat.label_en}
-                  </button>
-                );
-              })}
+              </select>
+              <ChevronDown
+                size={11}
+                className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-sand"
+              />
             </div>
 
-            {filteredProducts.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-24 text-center">
-                <div className="text-6xl mb-4">🔍</div>
-                <h3 className="text-brand-text-primary dark:text-[#F5F0E8] font-semibold text-xl mb-2">
-                  {t("common.noProducts")}
-                </h3>
-                <p className="text-brand-text-secondary dark:text-[#A09080]">
-                  {t("common.noProductsSubtext")}
-                </p>
-                <button
-                  onClick={() => {
-                    setSelectedCategories([]);
-                    setPriceMax(300);
-                  }}
-                  className="mt-6 border border-brand-gold text-brand-gold px-6 py-2.5 rounded-lg hover:bg-brand-gold hover:text-brand-bg transition-all duration-300"
-                >
-                  {lang === "fr" ? "Effacer les filtres" : "Clear Filters"}
-                </button>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5">
-                {filteredProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
+            {/* Clear filters */}
+            {hasActiveFilters && (
+              <button
+                onClick={clearFilters}
+                className="flex flex-shrink-0 items-center gap-1.5 text-[0.65rem] font-medium uppercase tracking-[0.18em] text-sand transition-colors duration-200 hover:text-ink"
+              >
+                <X size={11} />
+                {lang === "fr" ? "Effacer" : "Clear"}
+              </button>
             )}
           </div>
         </div>
+      </div>
+
+      {/* Product grid */}
+      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-8 sm:py-20">
+        {filteredProducts.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-32 text-center">
+            <p className="mb-4 text-[0.65rem] font-medium uppercase tracking-[0.32em] text-sand">
+              {lang === "fr" ? "Aucun résultat" : "No results"}
+            </p>
+            <h3 className="mb-2 font-display text-3xl font-light text-ink">
+              {t("common.noProducts")}
+            </h3>
+            <p className="mb-10 text-sm text-sand">{t("common.noProductsSubtext")}</p>
+            <button
+              onClick={clearFilters}
+              className="border border-ink px-8 py-3 text-[0.7rem] font-medium uppercase tracking-[0.22em] text-ink transition-all duration-300 hover:bg-ink hover:text-bone"
+            >
+              {lang === "fr" ? "Effacer les filtres" : "Clear Filters"}
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-8 sm:gap-10 lg:grid-cols-3 lg:gap-12">
+            {filteredProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -317,11 +255,15 @@ function ProductsContent() {
 
 export default function ProductsPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-brand-gold text-lg">Loading...</div>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center">
+          <p className="text-[0.65rem] font-medium uppercase tracking-[0.32em] text-sand">
+            Loading…
+          </p>
+        </div>
+      }
+    >
       <ProductsContent />
     </Suspense>
   );

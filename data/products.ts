@@ -183,8 +183,8 @@ export const products: Product[] = [
     slug: "gissah-imperial-valley",
     name: { en: "Imperial Valley", fr: "Imperial Valley" },
     description: {
-      en: "A regal Kuwaiti composition — crisp fruits over amber and precious woods. Quiet Gulf luxury.",
-      fr: "Une composition royale koweïtienne — fruits vifs sur ambre et bois précieux. Luxe du Golfe discret.",
+      en: "A regal Kuwaiti composition — crisp fruits over amber and precious woods. Quiet, understated luxury.",
+      fr: "Une composition royale koweïtienne — fruits vifs sur ambre et bois précieux. Luxe discret et raffiné.",
     },
     price: 549,
     category: "men",
@@ -283,8 +283,8 @@ export const products: Product[] = [
     slug: "anar-discovery-set",
     name: { en: "Discovery Set", fr: "Coffret Découverte" },
     description: {
-      en: "Five 10ml miniatures of our bestsellers — the perfect introduction to Gulf perfumery.",
-      fr: "Cinq miniatures de 10ml de nos meilleures ventes — la parfaite introduction à la parfumerie du Golfe.",
+      en: "Five 10ml miniatures of our bestsellers — the perfect introduction to fine perfumery.",
+      fr: "Cinq miniatures de 10ml de nos meilleures ventes — la parfaite introduction à la parfumerie fine.",
     },
     price: 349,
     category: "gifts",
@@ -302,10 +302,10 @@ export const products: Product[] = [
 
 export const heroSlides = [
   {
-    title_en: "The Finest Gulf Fragrances",
-    title_fr: "Les Meilleures Fragrances du Golfe",
-    subtitle_en: "Authentic Afnan, Lattafa, Armaf & more — delivered across Morocco",
-    subtitle_fr: "Afnan, Lattafa, Armaf et bien plus — livrés partout au Maroc",
+    title_en: "The Finest Fragrances",
+    title_fr: "Les Meilleures Fragrances",
+    subtitle_en: "Authentic fragrances delivered across Morocco",
+    subtitle_fr: "Des fragrances authentiques livrées partout au Maroc",
     cta_en: "Shop Now",
     cta_fr: "Découvrir",
     image: "/images/hero/hero-collection.png",
@@ -315,8 +315,8 @@ export const heroSlides = [
   {
     title_en: "New Arrivals",
     title_fr: "Nouveautés",
-    subtitle_en: "New arrivals from the Gulf's most celebrated fragrance houses",
-    subtitle_fr: "Nouveautés des plus grandes maisons du Golfe",
+    subtitle_en: "New arrivals from celebrated fragrance houses",
+    subtitle_fr: "Nouveautés des plus grandes maisons de parfumerie",
     cta_en: "Discover New",
     cta_fr: "Explorer",
     image: "/images/hero/hero-desert.png",
@@ -362,7 +362,7 @@ export const customerReviews = [
     name: "Youssef B.",
     initials: "Y",
     rating: 5,
-    text: "Afnan 9 PM has become my signature evening scent. The projection is incredible and I get compliments everywhere I go. Best Gulf fragrance I have ever bought.",
+    text: "Afnan 9 PM has become my signature evening scent. The projection is incredible and I get compliments everywhere I go. Best fragrance I have ever bought.",
     date: "2025-11-15",
   },
   {
@@ -410,7 +410,7 @@ export const customerReviews = [
     name: "Mehdi R.",
     initials: "M",
     rating: 5,
-    text: "Jean Lowe Ombre est mon parfum de soirée préféré. Le mélange safran, ambre et bois est addictif. Un grand luxe du Golfe à prix très accessible.",
+    text: "Jean Lowe Ombre est mon parfum de soirée préféré. Le mélange safran, ambre et bois est addictif. Un grand luxe à prix très accessible.",
     date: "2025-10-18",
   },
   {
@@ -418,7 +418,7 @@ export const customerReviews = [
     name: "Zineb K.",
     initials: "Z",
     rating: 5,
-    text: "Barakkat Rouge 540 is a floral masterpiece. The saffron and ambergris combination is breathtaking — authentic Gulf craftsmanship at a price that makes perfect sense.",
+    text: "Barakkat Rouge 540 is a floral masterpiece. The saffron and ambergris combination is breathtaking — authentic craftsmanship at a price that makes perfect sense.",
     date: "2025-10-12",
   },
 ];

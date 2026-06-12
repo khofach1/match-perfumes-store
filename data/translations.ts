@@ -27,13 +27,13 @@ export const translations = {
     },
     hero: {
       slide1: {
-        title: "The Finest Gulf Fragrances",
-        subtitle: "Authentic Afnan, Lattafa, Armaf & more — delivered across Morocco",
+        title: "The Finest Fragrances",
+        subtitle: "Authentic fragrances delivered across Morocco",
         cta: "Shop Now",
       },
       slide2: {
         title: "New Arrivals",
-        subtitle: "New arrivals from the Gulf's most celebrated fragrance houses",
+        subtitle: "New arrivals from celebrated fragrance houses",
         cta: "Discover New",
       },
     },
@@ -71,7 +71,7 @@ export const translations = {
       badge: "TESTIMONIALS",
     },
     footer: {
-      tagline: "Authentic Gulf fragrances for the modern Moroccan lifestyle",
+      tagline: "Authentic fragrances for the modern Moroccan lifestyle",
       vatNumber: "VAT Number: 300XXXXXXXXX",
       importantLinks: "Important Links",
       links: {
@@ -79,7 +79,7 @@ export const translations = {
         privacyPolicy: "Privacy Policy",
         refundPolicy: "Refund Policy",
         usageAgreement: "Usage Agreement",
-        gulfBrands: "Gulf Fragrance Brands",
+        ourBrands: "Our Brands",
         ourBranches: "Our Branches",
       },
       downloadApp: "Download Our App",
@@ -180,13 +180,13 @@ export const translations = {
     },
     hero: {
       slide1: {
-        title: "Les Meilleures Fragrances du Golfe",
-        subtitle: "Afnan, Lattafa, Armaf et bien plus — livrés partout au Maroc",
+        title: "Les Meilleures Fragrances",
+        subtitle: "Des fragrances authentiques livrées partout au Maroc",
         cta: "Découvrir",
       },
       slide2: {
         title: "Nouveautés",
-        subtitle: "Nouveautés des plus grandes maisons du Golfe",
+        subtitle: "Nouveautés des plus grandes maisons de parfumerie",
         cta: "Explorer",
       },
     },
@@ -224,7 +224,7 @@ export const translations = {
       badge: "TÉMOIGNAGES",
     },
     footer: {
-      tagline: "Fragrances authentiques du Golfe pour le style de vie marocain moderne",
+      tagline: "Fragrances authentiques pour le style de vie marocain moderne",
       vatNumber: "N° TVA : 300XXXXXXXXX",
       importantLinks: "Liens importants",
       links: {
@@ -232,7 +232,7 @@ export const translations = {
         privacyPolicy: "Politique de confidentialité",
         refundPolicy: "Politique de remboursement",
         usageAgreement: "Conditions d'utilisation",
-        gulfBrands: "Marques du Golfe",
+        ourBrands: "Nos Marques",
         ourBranches: "Nos boutiques",
       },
       downloadApp: "Télécharger notre appli",

@@ -25,18 +25,15 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://anarperfumes.ma"),
-  title: "Anar Perfumes | Authentic Gulf Fragrances — Morocco",
+  title: "Anar Perfumes | Fragrances Authentiques — Maroc",
   description:
-    "Discover Anar Perfumes — authentic Afnan, Lattafa, Armaf & Gulf fragrances delivered across Morocco. Free delivery on orders over 100 DH.",
+    "Découvrez Anar Perfumes — fragrances authentiques livrées partout au Maroc. Livraison gratuite dès 100 DH.",
   keywords: [
-    "Gulf fragrances Morocco",
-    "Afnan perfumes Maroc",
-    "Lattafa perfumes Maroc",
-    "Armaf perfumes Maroc",
-    "parfums du Golfe Maroc",
     "anar perfumes",
-    "parfums de luxe Maroc",
     "parfums maroc",
+    "parfums de luxe Maroc",
+    "fragrances authentiques Maroc",
+    "parfumerie Maroc",
   ],
   authors: [{ name: "Anar Perfumes" }],
   robots: {
@@ -48,9 +45,9 @@ export const metadata: Metadata = {
     canonical: "https://anarperfumes.ma",
   },
   openGraph: {
-    title: "Anar Perfumes | Authentic Gulf Fragrances — Morocco",
+    title: "Anar Perfumes | Fragrances Authentiques — Maroc",
     description:
-      "Discover Anar Perfumes — authentic Afnan, Lattafa, Armaf & Gulf fragrances delivered across Morocco. Free delivery on orders over 100 DH.",
+      "Découvrez Anar Perfumes — fragrances authentiques livrées partout au Maroc. Livraison gratuite dès 100 DH.",
     type: "website",
     url: "https://anarperfumes.ma",
     locale: "fr_MA",
@@ -61,15 +58,15 @@ export const metadata: Metadata = {
         url: "/images/hero/hero-collection.png",
         width: 1200,
         height: 630,
-        alt: "Anar Perfumes — Authentic Gulf Fragrances Morocco",
+        alt: "Anar Perfumes — Fragrances Authentiques Maroc",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Anar Perfumes | Authentic Gulf Fragrances — Morocco",
+    title: "Anar Perfumes | Fragrances Authentiques — Maroc",
     description:
-      "Discover Anar Perfumes — authentic Afnan, Lattafa, Armaf & Gulf fragrances delivered across Morocco. Free delivery on orders over 100 DH.",
+      "Découvrez Anar Perfumes — fragrances authentiques livrées partout au Maroc. Livraison gratuite dès 100 DH.",
     images: ["/images/hero/hero-collection.png"],
   },
 };
