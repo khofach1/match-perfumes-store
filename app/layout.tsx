@@ -1,11 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Cairo, Cormorant_Garamond } from "next/font/google";
+import { Cairo, Bodoni_Moda } from "next/font/google";
 import "./globals.css";
 import Analytics from "@/components/Analytics";
 
-const cormorant = Cormorant_Garamond({
+const bodoniModa = Bodoni_Moda({
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
+  weight: ["400", "500", "600", "700", "900"],
+  style: ["normal", "italic"],
   variable: "--font-display",
   display: "swap",
 });
@@ -81,7 +82,7 @@ export default function RootLayout({
       lang="fr"
       dir="ltr"
       suppressHydrationWarning
-      className={`${cormorant.variable} ${cairo.variable}`}
+      className={`${bodoniModa.variable} ${cairo.variable}`}
     >
       <head />
       <body className="min-h-screen bg-bone text-ink flex flex-col antialiased font-body">
