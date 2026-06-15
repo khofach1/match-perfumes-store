@@ -1,8 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
-
-const BRAND_NAME = "ANAR" as const;
+import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Menu, Search, ShoppingBag, User, X } from "lucide-react";
@@ -10,189 +8,147 @@ import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { useLanguage } from "@/context/LanguageContext";
 
+const navLinks = [
+  { labelFr: "Hommes",            labelEn: "Men",           href: "/products?category=men"    },
+  { labelFr: "Femmes",            labelEn: "Women",         href: "/products?category=women"  },
+  { labelFr: "Unisexe",           labelEn: "Unisex",        href: "/products?category=unisex" },
+  { labelFr: "Meilleures Ventes", labelEn: "Best Sellers",  href: "/products?new=true"        },
+  { labelFr: "Marques",           labelEn: "Brands",        href: "/products"                 },
+  { labelFr: "Tous les produits", labelEn: "All Products",  href: "/products"                 },
+];
+
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const { count, openCart } = useCart();
   const { user } = useAuth();
-  const { lang, t, toggleLanguage } = useLanguage();
+  const { lang, toggleLanguage } = useLanguage();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [scrolled, setScrolled] = useState(false);
-
-  const isHome = pathname === "/";
-  const isTransparent = isHome && !scrolled && !mobileOpen && !searchOpen;
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   function onSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const query = searchQuery.trim();
-    if (query) router.push(`/products?search=${encodeURIComponent(query)}`);
-    setSearchOpen(false);
+    const q = searchQuery.trim();
+    if (q) router.push(`/products?search=${encodeURIComponent(q)}`);
+    setSearchQuery("");
   }
 
-  const navItems = [
-    { label: "SHOP", href: "/products" },
-  ];
-
   return (
-    <header
-      className={[
-        "fixed inset-x-0 top-0 z-50 border-b transition-all duration-500",
-        isTransparent
-          ? "border-transparent bg-transparent text-bone"
-          : "border-border bg-bone/94 text-ink backdrop-blur-md",
-      ].join(" ")}
-    >
-      <nav className="mx-auto grid h-20 max-w-7xl grid-cols-[1fr_auto_1fr] items-center px-5 sm:px-8">
-        {/* Left navigation */}
-        <div className="hidden items-center gap-8 lg:flex">
-          {navItems.slice(0, 2).map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="text-xs font-medium uppercase tracking-[0.22em] opacity-[0.82] hover:text-tangier"
+    <header className="fixed inset-x-0 top-0 z-50 bg-white shadow-sm">
+      {/* Row 1 — Logo | Search | Icons */}
+      <div className="border-b border-gray-100">
+        <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6">
+          {/* Mobile hamburger */}
+          <button
+            onClick={() => setMobileOpen((v) => !v)}
+            className="flex h-9 w-9 items-center justify-center text-gray-700 lg:hidden"
+            aria-label="Menu"
+          >
+            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+
+          {/* Logo */}
+          <Link href="/" className="flex-shrink-0" aria-label="Anar Perfumes">
+            <span className="block text-xl font-black uppercase tracking-widest text-black">
+              ANAR
+            </span>
+            <span className="block text-[8px] font-semibold uppercase tracking-[0.4em] text-gray-400 -mt-0.5">
+              Perfumes
+            </span>
+          </Link>
+
+          {/* Search bar — grows to fill center */}
+          <form
+            onSubmit={onSearch}
+            className="mx-4 flex flex-1 items-center overflow-hidden rounded-none border border-gray-300 bg-white focus-within:border-black transition-colors"
+          >
+            <input
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder={lang === "fr" ? "Rechercher un parfum, une marque..." : "Search a fragrance or brand..."}
+              className="h-10 flex-1 bg-transparent px-4 text-sm text-black placeholder:text-gray-400 focus:outline-none"
+            />
+            <button
+              type="submit"
+              className="flex h-10 w-11 flex-shrink-0 items-center justify-center bg-black text-white hover:bg-gray-900 transition-colors"
+              aria-label="Search"
             >
-              {item.label}
+              <Search size={16} />
+            </button>
+          </form>
+
+          {/* Right icons */}
+          <div className="flex flex-shrink-0 items-center gap-1">
+            <button
+              onClick={toggleLanguage}
+              className="hidden h-9 items-center px-2 text-xs font-semibold uppercase text-gray-500 hover:text-black sm:flex"
+            >
+              {lang === "en" ? "FR" : "EN"}
+            </button>
+
+            <Link
+              href="/account"
+              className="flex h-9 w-9 items-center justify-center text-gray-700 hover:text-black"
+              aria-label="Account"
+            >
+              <User size={19} />
+              {user && <span className="absolute top-3 h-1.5 w-1.5 rounded-full bg-black" />}
+            </Link>
+
+            <button
+              onClick={openCart}
+              className="relative flex h-9 w-9 items-center justify-center text-gray-700 hover:text-black"
+              aria-label="Cart"
+            >
+              <ShoppingBag size={19} />
+              {count > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-black px-0.5 text-[9px] font-bold text-white">
+                  {count > 9 ? "9+" : count}
+                </span>
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Row 2 — Nav links (desktop only) */}
+      <div className="hidden border-b border-gray-100 lg:block">
+        <div className="mx-auto flex max-w-7xl items-center justify-center gap-8 px-6 h-9">
+          {navLinks.map((item) => (
+            <Link
+              key={item.href + item.labelFr}
+              href={item.href}
+              className="text-[11px] font-semibold uppercase tracking-wider text-gray-600 hover:text-black transition-colors whitespace-nowrap"
+            >
+              {lang === "fr" ? item.labelFr : item.labelEn}
             </Link>
           ))}
         </div>
-
-        {/* Mobile menu button */}
-        <button
-          onClick={() => setMobileOpen((value) => !value)}
-          aria-label={mobileOpen ? "Close menu" : "Open menu"}
-          aria-expanded={mobileOpen}
-          className="flex h-11 w-11 items-center justify-center lg:hidden"
-        >
-          {mobileOpen ? <X size={21} /> : <Menu size={21} />}
-        </button>
-
-        {/* Center logo */}
-        <Link href="/" className="text-center" aria-label="Anar Perfumes home">
-          <span suppressHydrationWarning className="block font-display text-3xl font-light leading-none tracking-normal sm:text-4xl">
-            {BRAND_NAME}
-          </span>
-          <span suppressHydrationWarning className="mt-1 block text-[0.58rem] font-medium uppercase tracking-[0.38em]">
-            Perfumes
-          </span>
-        </Link>
-
-        {/* Right navigation and actions */}
-        <div className="flex items-center justify-end gap-3">
-          <div className="hidden items-center gap-8 lg:flex">
-            {navItems.slice(2).map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="text-xs font-medium uppercase tracking-[0.22em] opacity-[0.82] hover:text-tangier"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </div>
-
-          <button
-            onClick={() => setSearchOpen((value) => !value)}
-            aria-label={searchOpen ? "Close search" : "Open search"}
-            className="hidden h-10 w-10 items-center justify-center hover:text-tangier sm:flex"
-          >
-            {searchOpen ? <X size={18} /> : <Search size={18} />}
-          </button>
-
-          <button
-            onClick={toggleLanguage}
-            className="hidden text-xs font-medium uppercase tracking-[0.22em] hover:text-tangier sm:block"
-            aria-label={lang === "en" ? "Switch to French" : "Switch to English"}
-          >
-            {lang === "en" ? "FR" : "EN"}
-          </button>
-
-          <Link
-            href="/account"
-            aria-label="Account"
-            className="hidden h-10 w-10 items-center justify-center hover:text-tangier sm:flex"
-          >
-            <User size={18} />
-            {user && <span className="ms-1 h-1.5 w-1.5 rounded-full bg-tangier" />}
-          </Link>
-
-          <button
-            onClick={openCart}
-            aria-label="Cart"
-            className="relative flex h-11 w-11 items-center justify-center hover:text-tangier"
-          >
-            <ShoppingBag size={19} />
-            {count > 0 && (
-              <span className="absolute end-0 top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-tangier px-1 text-[10px] font-medium text-bone">
-                {count > 9 ? "9+" : count}
-              </span>
-            )}
-          </button>
-        </div>
-      </nav>
-
-      {/* Search field */}
-      <div
-        className={[
-          "overflow-hidden border-t border-border bg-bone transition-all duration-300",
-          searchOpen ? "max-h-24 opacity-100" : "max-h-0 opacity-0",
-        ].join(" ")}
-      >
-        <form onSubmit={onSearch} className="mx-auto flex max-w-3xl items-center gap-3 px-5 py-4 sm:px-8">
-          <Search size={18} className="text-tangier" />
-          <input
-            autoFocus={searchOpen}
-            value={searchQuery}
-            onChange={(event) => setSearchQuery(event.target.value)}
-            placeholder={t("nav.search")}
-            className="min-h-11 flex-1 bg-transparent text-sm text-ink placeholder:text-sand focus:outline-none"
-          />
-        </form>
       </div>
 
       {/* Mobile menu */}
-      <div
-        className={[
-          "overflow-hidden border-t border-border bg-bone transition-all duration-300 lg:hidden",
-          mobileOpen ? "max-h-[520px] opacity-100" : "max-h-0 opacity-0",
-        ].join(" ")}
-      >
-        <div className="px-5 py-5">
-          <div className="grid gap-1">
-            {navItems.map((item) => (
+      {mobileOpen && (
+        <div className="border-t border-gray-100 bg-white lg:hidden">
+          <div className="px-4 py-3 flex flex-col gap-0.5">
+            {navLinks.map((item) => (
               <Link
-                key={item.href}
+                key={item.href + item.labelFr}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                className="py-4 text-sm font-medium uppercase tracking-[0.2em] text-ink"
+                className="py-3 text-sm font-medium text-gray-700 border-b border-gray-50"
               >
-                {item.label}
+                {lang === "fr" ? item.labelFr : item.labelEn}
               </Link>
             ))}
             <button
               onClick={toggleLanguage}
-              className="py-4 text-start text-sm font-medium uppercase tracking-[0.2em] text-tangier"
+              className="py-3 text-left text-sm font-medium text-gray-500"
             >
-              {lang === "en" ? "Français" : "English"}
+              {lang === "fr" ? "Switch to English" : "Passer en Français"}
             </button>
-            <Link
-              href="/account"
-              onClick={() => setMobileOpen(false)}
-              className="py-4 text-sm font-medium uppercase tracking-[0.2em] text-ink"
-            >
-              {lang === "fr" ? "Mon compte" : "My account"}
-            </Link>
           </div>
         </div>
-      </div>
+      )}
     </header>
   );
 }

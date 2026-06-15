@@ -2,6 +2,7 @@
 
 import { MouseEvent, useState } from "react";
 import Link from "next/link";
+import { Heart } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useLanguage } from "@/context/LanguageContext";
 import type { Product } from "@/data/products";
@@ -10,35 +11,9 @@ interface ProductCardProps {
   product: Product;
 }
 
-function BottlePlaceholder() {
-  return (
-    <div className="absolute inset-0 flex items-center justify-center bg-bone-soft">
-      <svg
-        viewBox="0 0 40 80"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-[60px] w-auto opacity-30"
-        aria-hidden="true"
-      >
-        {/* Cap */}
-        <rect x="14" y="0" width="12" height="7" rx="2" fill="#8B7E6A" />
-        {/* Neck */}
-        <rect x="16" y="7" width="8" height="11" rx="1" fill="#8B7E6A" />
-        {/* Collar */}
-        <rect x="11" y="16" width="18" height="4" rx="1" fill="#8B7E6A" />
-        {/* Body */}
-        <path
-          d="M11 20 Q7 30 7 40 L7 70 Q7 74 11 74 L29 74 Q33 74 33 70 L33 40 Q33 30 29 20 Z"
-          fill="#8B7E6A"
-        />
-      </svg>
-    </div>
-  );
-}
-
 export default function ProductCard({ product }: ProductCardProps) {
   const { addToCart } = useCart();
-  const { lang, t } = useLanguage();
+  const { lang } = useLanguage();
   const [added, setAdded] = useState(false);
   const [imgError, setImgError] = useState(false);
   const name = lang === "fr" ? product.name.fr : product.name.en;
@@ -46,92 +21,89 @@ export default function ProductCard({ product }: ProductCardProps) {
   function handleAddToCart(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
     event.stopPropagation();
-
-    addToCart({
-      id: product.id,
-      name,
-      price: product.price,
-      image: product.image,
-      size: product.sizes[0],
-    });
+    if (!product.inStock) return;
+    addToCart({ id: product.id, name, price: product.price, image: product.image, size: product.sizes[0] });
     setAdded(true);
     setTimeout(() => setAdded(false), 1800);
   }
 
   return (
-    <Link href={`/products/${product.slug}`} className="group block">
+    <Link href={`/products/${product.slug}`} className="group block bg-white">
       <article>
-        {/* Image — dominant */}
-        <div className="relative aspect-[3/4] overflow-hidden bg-bone-soft">
+        {/* Image area */}
+        <div className="relative aspect-square overflow-hidden bg-[#F5F5F5]">
           {imgError ? (
-            <BottlePlaceholder />
+            <div className="flex h-full w-full items-center justify-center">
+              <svg viewBox="0 0 40 80" fill="none" className="h-16 w-auto opacity-20">
+                <rect x="14" y="0" width="12" height="7" rx="2" fill="#999" />
+                <rect x="16" y="7" width="8" height="11" rx="1" fill="#999" />
+                <rect x="11" y="16" width="18" height="4" rx="1" fill="#999" />
+                <path d="M11 20 Q7 30 7 40 L7 70 Q7 74 11 74 L29 74 Q33 74 33 70 L33 40 Q33 30 29 20 Z" fill="#999" />
+              </svg>
+            </div>
           ) : (
             <img
               src={product.image}
               alt={name}
               onError={() => setImgError(true)}
-              className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+              className="h-full w-full object-contain p-4 transition-transform duration-300 group-hover:scale-105"
             />
           )}
 
-          {/* Hover overlay */}
-          <div className="pointer-events-none absolute inset-0 bg-ink/25 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-          {/* Add to cart — slides up from bottom */}
+          {/* Wishlist button */}
           <button
-            onClick={handleAddToCart}
-            disabled={!product.inStock}
-            className={[
-              "absolute inset-x-0 bottom-0 translate-y-full py-4 text-[0.65rem] font-medium uppercase tracking-[0.25em] transition-all duration-300 ease-out group-hover:translate-y-0",
-              product.inStock
-                ? added
-                  ? "bg-tangier text-bone"
-                  : "bg-ink text-bone hover:bg-tangier"
-                : "cursor-not-allowed bg-sand text-bone",
-            ].join(" ")}
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+            className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-sm opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+            aria-label="Add to wishlist"
           >
-            {!product.inStock
-              ? lang === "fr"
-                ? "Rupture de stock"
-                : "Out of Stock"
-              : added
-              ? t("product.addedToCart")
-              : t("product.addToCart")}
+            <Heart size={15} className="text-gray-400 hover:text-red-500 transition-colors" />
           </button>
-
-          {/* New badge — minimal */}
-          {product.isNew && (
-            <span className="absolute left-4 top-4 bg-bone/80 px-2.5 py-1 text-[0.55rem] font-medium uppercase tracking-[0.22em] text-ink backdrop-blur-sm">
-              {lang === "fr" ? "Nouveau" : "New"}
-            </span>
-          )}
-
-          {/* Offer indicator — price line, not a badge */}
-          {product.isOffer && product.originalPrice && (
-            <span className="absolute right-4 top-4 bg-ink/80 px-2.5 py-1 text-[0.55rem] font-medium uppercase tracking-[0.22em] text-bone backdrop-blur-sm">
-              Sale
-            </span>
-          )}
         </div>
 
         {/* Product info */}
-        <div className="pt-5">
-          <p className="mb-1.5 text-[0.6rem] font-medium uppercase tracking-[0.24em] text-sand">
+        <div className="p-3">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-black">
             {product.brand}
           </p>
-          <h3 className="font-display text-xl font-medium leading-snug text-ink transition-colors duration-300 group-hover:text-ink-soft">
+          <h3 className="mt-0.5 text-sm font-medium leading-tight text-gray-700 line-clamp-2">
             {name}
           </h3>
-          <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-sm text-ink-soft">
-              {product.price} {t("currency")}
-            </span>
-            {product.originalPrice && product.isOffer && (
-              <span className="text-xs text-sand line-through">
-                {product.originalPrice} {t("currency")}
-              </span>
+
+          {/* Price */}
+          <div className="mt-2 flex items-baseline gap-2">
+            {product.isOffer && product.originalPrice ? (
+              <>
+                <span className="text-sm font-bold text-red-600">{product.price} DH</span>
+                <span className="text-xs text-gray-400 line-through">{product.originalPrice} DH</span>
+              </>
+            ) : (
+              <span className="text-sm font-bold text-black">{product.price} DH</span>
             )}
           </div>
+
+          {/* Add to cart / Out of stock */}
+          {product.inStock ? (
+            <button
+              onClick={handleAddToCart}
+              className={[
+                "mt-3 w-full py-2.5 text-[11px] font-semibold uppercase tracking-wider transition-colors",
+                added
+                  ? "bg-gray-700 text-white"
+                  : "bg-black text-white hover:bg-gray-800",
+              ].join(" ")}
+            >
+              {added
+                ? (lang === "fr" ? "Ajouté ✓" : "Added ✓")
+                : (lang === "fr" ? "Ajouter au panier" : "Add to Cart")}
+            </button>
+          ) : (
+            <button
+              disabled
+              className="mt-3 w-full cursor-not-allowed bg-gray-200 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-gray-400"
+            >
+              {lang === "fr" ? "Rupture de stock" : "Out of Stock"}
+            </button>
+          )}
         </div>
       </article>
     </Link>

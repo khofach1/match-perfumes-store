@@ -11,7 +11,7 @@ import { Suspense } from "react";
 type Category = "all" | "women" | "men" | "unisex" | "gifts";
 
 function ProductsContent() {
-  const { t, lang } = useLanguage();
+  const { lang } = useLanguage();
   const searchParams = useSearchParams();
 
   const initialCategory = (searchParams.get("category") as Category) ?? "all";
@@ -62,33 +62,30 @@ function ProductsContent() {
   }, [selectedCategory, selectedBrand, showOffers, showNew]);
 
   return (
-    <div className="min-h-screen bg-bone">
+    <div className="min-h-screen bg-white">
       {/* Page header */}
-      <div className="border-b border-border px-4 py-24 sm:px-8">
+      <div className="border-b border-gray-100 px-4 py-10 sm:px-8">
         <div className="mx-auto max-w-7xl">
-          <p className="mb-3 text-[0.65rem] font-medium uppercase tracking-[0.32em] text-sand">
-            {lang === "fr" ? "Collection" : "Collection"}
-          </p>
-          <h1 className="font-display text-5xl font-light text-ink sm:text-6xl">
+          <h1 className="text-2xl font-bold uppercase tracking-wider text-black">
             {showOffers
-              ? t("nav.offers")
+              ? (lang === "fr" ? "Offres" : "Offers")
               : showNew
-              ? t("nav.newArrival")
+              ? (lang === "fr" ? "Nouveautés" : "New Arrivals")
               : lang === "fr"
               ? "Tous les Produits"
               : "All Products"}
           </h1>
-          <p className="mt-4 text-sm text-sand">
+          <p className="mt-1 text-xs text-gray-500">
             {filteredProducts.length}{" "}
-            {lang === "fr" ? "références" : "references"}
+            {lang === "fr" ? "produits" : "products"}
           </p>
         </div>
       </div>
 
       {/* Horizontal filter bar */}
-      <div className="sticky top-0 z-30 border-b border-border bg-bone/95 backdrop-blur-sm">
+      <div className="sticky top-[102px] z-30 border-b border-gray-100 bg-white/95 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-8">
-          <div className="flex items-center gap-2 overflow-x-auto py-4 scrollbar-none sm:gap-3">
+          <div className="flex items-center gap-2 overflow-x-auto py-3 scrollbar-none sm:gap-3">
 
             {/* Category pills */}
             {categories.map((cat) => (
@@ -96,10 +93,10 @@ function ProductsContent() {
                 key={cat.key}
                 onClick={() => setSelectedCategory(cat.key)}
                 className={[
-                  "flex-shrink-0 border px-4 py-1.5 text-[0.68rem] font-medium uppercase tracking-[0.18em] transition-all duration-200",
+                  "flex-shrink-0 border px-4 py-1.5 text-[11px] font-semibold uppercase tracking-wider transition-all duration-200",
                   selectedCategory === cat.key
-                    ? "border-ink bg-ink text-bone"
-                    : "border-border text-sand hover:border-ink-soft hover:text-ink",
+                    ? "border-black bg-black text-white"
+                    : "border-gray-300 text-gray-500 hover:border-black hover:text-black",
                 ].join(" ")}
               >
                 {lang === "fr" ? cat.label_fr : cat.label_en}
@@ -107,14 +104,14 @@ function ProductsContent() {
             ))}
 
             {/* Divider */}
-            <div className="mx-1 h-5 w-px flex-shrink-0 bg-border" />
+            <div className="mx-1 h-5 w-px flex-shrink-0 bg-gray-200" />
 
             {/* Brand dropdown */}
             <div className="relative flex-shrink-0">
               <select
                 value={selectedBrand}
                 onChange={(e) => setSelectedBrand(e.target.value)}
-                className="cursor-pointer appearance-none border border-border bg-transparent py-1.5 pl-4 pr-8 text-[0.68rem] font-medium uppercase tracking-[0.18em] text-sand transition-all duration-200 hover:border-ink-soft hover:text-ink focus:outline-none"
+                className="cursor-pointer appearance-none border border-gray-300 bg-transparent py-1.5 pl-4 pr-8 text-[11px] font-semibold uppercase tracking-wider text-gray-500 transition-all duration-200 hover:border-black hover:text-black focus:outline-none"
               >
                 <option value="all">
                   {lang === "fr" ? "Marque" : "Brand"}
@@ -127,7 +124,7 @@ function ProductsContent() {
               </select>
               <ChevronDown
                 size={11}
-                className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-sand"
+                className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500"
               />
             </div>
 
@@ -135,7 +132,7 @@ function ProductsContent() {
             {hasActiveFilters && (
               <button
                 onClick={clearFilters}
-                className="ml-auto flex flex-shrink-0 items-center gap-1.5 text-[0.65rem] font-medium uppercase tracking-[0.18em] text-sand transition-colors duration-200 hover:text-ink"
+                className="ml-auto flex flex-shrink-0 items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-gray-400 transition-colors duration-200 hover:text-black"
               >
                 <X size={11} />
                 {lang === "fr" ? "Effacer" : "Clear"}
@@ -146,25 +143,21 @@ function ProductsContent() {
       </div>
 
       {/* Product grid */}
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-8 sm:py-20">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
         {filteredProducts.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-32 text-center">
-            <p className="mb-4 text-[0.65rem] font-medium uppercase tracking-[0.32em] text-sand">
-              {lang === "fr" ? "Aucun résultat" : "No results"}
+          <div className="flex flex-col items-center justify-center py-24 text-center">
+            <p className="mb-3 text-sm text-gray-400">
+              {lang === "fr" ? "Aucun produit trouvé" : "No products found"}
             </p>
-            <h3 className="mb-2 font-display text-3xl font-light text-ink">
-              {t("common.noProducts")}
-            </h3>
-            <p className="mb-10 text-sm text-sand">{t("common.noProductsSubtext")}</p>
             <button
               onClick={clearFilters}
-              className="border border-ink px-8 py-3 text-[0.7rem] font-medium uppercase tracking-[0.22em] text-ink transition-all duration-300 hover:bg-ink hover:text-bone"
+              className="mt-4 border border-black px-8 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-black transition-colors hover:bg-black hover:text-white"
             >
               {lang === "fr" ? "Effacer les filtres" : "Clear Filters"}
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-8 sm:gap-10 lg:grid-cols-3 lg:gap-12">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-5 lg:gap-4">
             {filteredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}

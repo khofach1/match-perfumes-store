@@ -1,15 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { Cairo, Bodoni_Moda } from "next/font/google";
+import { Cairo } from "next/font/google";
 import "./globals.css";
 import Analytics from "@/components/Analytics";
-
-const bodoniModa = Bodoni_Moda({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "900"],
-  style: ["normal", "italic"],
-  variable: "--font-display",
-  display: "swap",
-});
 
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
@@ -19,7 +11,7 @@ const cairo = Cairo({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#F4EFE6",
+  themeColor: "#FFFFFF",
   width: "device-width",
   initialScale: 1,
 };
@@ -82,7 +74,7 @@ export default function RootLayout({
       lang="fr"
       dir="ltr"
       suppressHydrationWarning
-      className={`${bodoniModa.variable} ${cairo.variable}`}
+      className={cairo.variable}
     >
       <head />
       <body className="min-h-screen bg-bone text-ink flex flex-col antialiased font-body">
