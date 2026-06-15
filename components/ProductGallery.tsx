@@ -23,7 +23,7 @@ export default function ProductGallery({ images, name }: ProductGalleryProps) {
         {images.map((image, index) => (
           <div
             key={`${image}-${index}`}
-            className="relative aspect-[4/5] w-full shrink-0 snap-center overflow-hidden bg-[#F5F5F5]"
+            className="relative aspect-[4/5] w-full shrink-0 snap-center overflow-hidden"
           >
             <Image
               src={image}
@@ -40,7 +40,7 @@ export default function ProductGallery({ images, name }: ProductGalleryProps) {
       {/* Desktop stacked gallery */}
       <div className="hidden space-y-5 lg:block">
         {images.map((image, index) => (
-          <div key={`${image}-${index}`} className="relative aspect-[4/5] overflow-hidden bg-[#F5F5F5]">
+          <div key={`${image}-${index}`} className="relative aspect-[4/5] overflow-hidden">
             <Image
               src={image}
               alt={`${name} ${index + 1}`}

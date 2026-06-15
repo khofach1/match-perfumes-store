@@ -31,7 +31,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     <Link href={`/products/${product.slug}`} className="group block bg-white">
       <article>
         {/* Image area */}
-        <div className="relative aspect-square overflow-hidden bg-[#F5F5F5]">
+        <div className="relative aspect-square overflow-hidden">
           {imgError ? (
             <div className="flex h-full w-full items-center justify-center">
               <svg viewBox="0 0 40 80" fill="none" className="h-16 w-auto opacity-20">
