@@ -106,7 +106,7 @@ export default function ProductDetailPage() {
       </div>
 
       {/* 60/40 gallery PDP */}
-      <section className="mx-auto grid max-w-7xl gap-12 px-5 pb-28 sm:px-8 lg:grid-cols-[minmax(0,1.5fr)_minmax(360px,1fr)] lg:gap-20">
+      <section className="mx-auto grid max-w-7xl gap-12 px-5 pb-28 sm:px-8 lg:grid-cols-[28rem_1fr] lg:gap-20">
         <ProductGallery images={images} name={name} />
 
         <motion.aside {...reveal} className="lg:sticky lg:top-28 lg:self-start">
