@@ -15,6 +15,7 @@ function ProductsContent() {
   const searchParams = useSearchParams();
 
   const initialCategory = (searchParams.get("category") as Category) ?? "all";
+  const initialBrand = searchParams.get("brand") ?? "all";
   const showOffers = searchParams.get("offer") === "true";
   const showNew = searchParams.get("new") === "true";
 
@@ -26,7 +27,7 @@ function ProductsContent() {
   const [selectedCategory, setSelectedCategory] = useState<Category>(
     initialCategory !== "all" ? initialCategory : "all"
   );
-  const [selectedBrand, setSelectedBrand] = useState<string>("all");
+  const [selectedBrand, setSelectedBrand] = useState<string>(initialBrand);
 
   const categories: { key: Category; label_en: string; label_fr: string }[] = [
     { key: "all",    label_en: "All",    label_fr: "Tous"     },

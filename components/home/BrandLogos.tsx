@@ -41,14 +41,8 @@ export default function BrandLogos() {
               href={brand.href}
               className="group flex flex-shrink-0 flex-col items-center gap-2"
             >
-              <div className="flex h-20 w-20 items-center justify-center rounded-full border border-gray-200 bg-white transition-colors duration-200 group-hover:border-black">
-                <span className="px-2 text-center text-[9px] font-semibold uppercase leading-snug tracking-wide text-gray-500 transition-colors group-hover:text-black">
-                  {brand.name.split(" ").map((word, i) => (
-                    <span key={i} className="block">{word}</span>
-                  ))}
-                </span>
-              </div>
-              <span className="max-w-[88px] text-center text-[10px] font-medium leading-tight text-gray-500 transition-colors group-hover:text-black">
+              <div className="h-[120px] w-[120px] rounded-full border border-gray-200 bg-white transition-colors duration-200 group-hover:border-black" />
+              <span className="max-w-[120px] text-center text-[11px] font-semibold uppercase tracking-wide text-gray-600 transition-colors group-hover:text-black">
                 {brand.name}
               </span>
             </Link>
