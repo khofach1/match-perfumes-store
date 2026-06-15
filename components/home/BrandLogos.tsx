@@ -4,14 +4,14 @@ import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 
 const brands = [
-  { name: "Afnan",              href: "/products?brand=Afnan"              },
-  { name: "Lattafa",            href: "/products?brand=Lattafa"            },
-  { name: "Armaf",              href: "/products?brand=Armaf"              },
-  { name: "Fragrance World",    href: "/products?brand=Fragrance+World"    },
-  { name: "Ibrahim Al Qurashi", href: "/products?brand=Ibrahim+Al+Qurashi" },
-  { name: "Gissah",             href: "/products?brand=Gissah"             },
-  { name: "Maison Alhambra",    href: "/products?brand=Maison+Alhambra"    },
-  { name: "French Avenue",      href: "/products?brand=French+Avenue"      },
+  { name: "Afnan",              href: "/products?brand=Afnan",              logo: "/images/brands/afnan.png"              },
+  { name: "Lattafa",            href: "/products?brand=Lattafa",            logo: "/images/brands/lattafa.png"            },
+  { name: "Armaf",              href: "/products?brand=Armaf",              logo: "/images/brands/armaf.png"              },
+  { name: "Fragrance World",    href: "/products?brand=Fragrance+World",    logo: "/images/brands/fragrance-world.png"    },
+  { name: "Ibrahim Al Qurashi", href: "/products?brand=Ibrahim+Al+Qurashi", logo: "/images/brands/ibrahim-al-qurashi.png" },
+  { name: "Gissah",             href: "/products?brand=Gissah",             logo: "/images/brands/gissah.png"             },
+  { name: "Maison Alhambra",    href: "/products?brand=Maison+Alhambra",    logo: "/images/brands/maison-alhambra.png"    },
+  { name: "French Avenue",      href: "/products?brand=French+Avenue",      logo: "/images/brands/french-avenue.png"      },
 ];
 
 export default function BrandLogos() {
@@ -41,7 +41,9 @@ export default function BrandLogos() {
               href={brand.href}
               className="group flex flex-shrink-0 flex-col items-center gap-2"
             >
-              <div className="h-[120px] w-[120px] rounded-full border border-gray-200 bg-white transition-colors duration-200 group-hover:border-black" />
+              <div className="flex h-[120px] w-[120px] items-center justify-center overflow-hidden rounded-full border border-gray-200 bg-white p-2 transition-colors duration-200 group-hover:border-black">
+                <img src={brand.logo} alt={brand.name} className="h-full w-full object-contain" />
+              </div>
               <span className="max-w-[120px] text-center text-[11px] font-semibold uppercase tracking-wide text-gray-600 transition-colors group-hover:text-black">
                 {brand.name}
               </span>
